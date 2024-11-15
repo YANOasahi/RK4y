@@ -8,12 +8,13 @@ import variables_Bz
 # import functions made by myself
 import FourGaussian
 import Enge
+import position
 
 
 # if magnet has trim coils, Bz : B0z * B-X curve * trim * fringe
 # else if there is no trim coils, Bz : B0z * B-X curve * fringe
 # else input parameter is wrong...
-def Bx(trim, x, y):
+def Bz(trim, x, y):
     if trim == 'trim':
         Bz = variables_tune.B0z *\
             (variables_Bz.para_wz[0]+variables_Bz.para_wz[1]*(x/1000) +
