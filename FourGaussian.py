@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # import variables defined by myself
-import variables
+import variables_FourGaussians as variables_FourGaussians
 
 # define gaussian
 def Gaussian(x, amp, offset, mean, sigma):
@@ -13,26 +13,23 @@ def Gaussian(x, amp, offset, mean, sigma):
 # after summing up, we have 10 arrays, Btrim
 def Btrim_Sum(x):
     
-    Btrim = np.zeros(10)
+    Btrim = np.zeros((10,len(x)))
 
     for i in range(10):
         for j in range(4):
-            Btrim[i] += Gaussian(x, variables.amp[i][j], variables.offset[i][j], 
-                                 variables.mean[i][j], variables.sigma[i][j])
+            Btrim[i] += Gaussian(x, variables_FourGaussians.amp[i][j], variables_FourGaussians.offset[i][j], 
+                                 variables_FourGaussians.mean[i][j], variables_FourGaussians.sigma[i][j])
 
     # sum up 10 Btrims
     # after summing up, we have the magnetic field distribution of trim coils, Btrim_sum
-    Btrim_sum=np.zeros()
+    Btrim_sum=np.zeros(len(x))
 
     for i in range(10):
         Btrim_sum+=Btrim[i]
 
-    # # check the shape of the function
-    # for i in range(10):
-    #      plt.plot(x,Btrim[i])
-
-    # plt.plot(x,Btrim_sum+0.05)
-
-    # plt.show()
-
     return Btrim_sum
+
+# check the shape of the function
+# x=np.arange(-300,300,1)
+# plt.plot(x,Btrim_Sum(x))
+# plt.show()
