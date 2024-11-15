@@ -118,5 +118,5 @@ def Position(x,y):
     return pos
 
 
-# pos=Position(800,800)
-# print(pos)
+pos=Position(800,800)
+print(pos)
