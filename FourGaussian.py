@@ -30,7 +30,7 @@ def Btrim_Sum(x):
     Btrim_sum = np.zeros(len(x))
 
     for i in range(10):
-        Btrim_sum += Btrim[i]*variables_tune.trim_current[i]
+        Btrim_sum += Btrim[i]*variables_tune.trim_current[i]/200
 
     return Btrim_sum
 
