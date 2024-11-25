@@ -35,6 +35,6 @@ def Btrim_Sum(x):
     return Btrim_sum
 
 # check the shape of the function
-# x=np.arange(-300,300,1)
+# x=np.arange(-300,300,0.5)
 # plt.plot(x,Btrim_Sum(x))
 # plt.show()

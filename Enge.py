@@ -16,5 +16,5 @@ def enge(x):
 # check the shape of the function
 # x = np.arange(-10, 10, 0.5)
 
-# plt.plot(x, Enge(x))
+# plt.plot(x, enge(x))
 # plt.show()
