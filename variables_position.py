@@ -1,8 +1,11 @@
 import numpy as np
 
 # position of the center of the magnets
-# 6 sectors x 4 magnets
+# 4 magnets x 6 sectors
+
+# magnet_pos_x is the center of magnet's coordinate in the X-axis
 magnet_pos_x = []
+# magnet_pos_y is the center of magnet's coordinate in the Y-axis
 magnet_pos_y = []
 
 magnet_pos_x = ((9232.420563, 8805.253915, 7980.153668, 6812.990034),
@@ -26,10 +29,10 @@ rad3 = np.zeros(6)
 rad4 = np.zeros(6)
 
 for i in range(6):
-    rad1[i] = (7.5+i*60)/180*np.pi
-    rad2[i] = (225+i*60)/180*np.pi
-    rad3[i] = (37.5+i*60)/180*np.pi
-    rad4[i] = (52.5+i*60)/180*np.pi
+    rad1[i] = -(7.5+i*60)/180*np.pi
+    rad2[i] = -(22.5+i*60)/180*np.pi
+    rad3[i] = -(37.5+i*60)/180*np.pi
+    rad4[i] = -(52.5+i*60)/180*np.pi
 
 
 bending_angle = []
