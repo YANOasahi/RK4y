@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # import variables defined by myself
 import variables_FourGaussians as vf
-import variables_tune as vt
+import variables_conditions as vc
 
 # define gaussian
 
@@ -30,7 +30,7 @@ def Btrim_Sum(x):
     Btrim_sum = np.zeros(len(x))
 
     for i in range(10):
-        Btrim_sum += Btrim[i]*vt.trim_current[i]/200
+        Btrim_sum += Btrim[i]*vc.trim_current[i]/200
 
     return Btrim_sum
 

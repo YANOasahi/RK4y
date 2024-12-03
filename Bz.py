@@ -2,7 +2,7 @@
 import numpy as np
 
 # import variables defined by myself
-import variables_tune as vt
+import variables_conditions as vc
 import variables_Bz as vb
 
 # import functions made by myself
@@ -16,7 +16,7 @@ import position
 # else input parameter is wrong...
 def Bz(trim, x, y):
     if trim == 'trim':
-        Bz = vt.B0z *\
+        Bz = vc.B0z *\
             (vb.para_twz[0]+vb.para_twz[1]*(x/1000) +
              vb.para_twz[2]*(x/1000)**2+vb.para_twz[3]*(x/1000)**3 +
              vb.para_twz[4]*(x/1000)**4+vb.para_twz[5]*(x/1000)**5 +
@@ -26,7 +26,7 @@ def Bz(trim, x, y):
         Bz = Bz*Enge.enge(y)*-1
         return Bz
     elif trim == 'no_trim':
-        Bz = vt.B0z *\
+        Bz = vc.B0z *\
             (vb.para_twz[0]+vb.para_twz[1]*(x/1000) +
              vb.para_twz[2]*(x/1000)**2+vb.para_twz[3]*(x/1000)**3 +
              vb.para_twz[4]*(x/1000)**4+vb.para_twz[5]*(x/1000)**5 +
