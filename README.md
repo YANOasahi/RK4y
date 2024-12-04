@@ -1,6 +1,6 @@
 ## RK4y (under development)
 <br>
-# Structure<br>
+<font size='+1'>Structure</font><br>
 &bull;FourGaussian.py;<br>
 For preparing the magnetic field of the trim coils, Btrim_sum. We have 10 trim coils, and each magnetic field, Btrim, is represented by summing four gaussians. Finally, we will get the field as the sum of 10 trim coils.<br>
 Variables are in variables_FourGaussians.py. There are 4 list, amp, mean, sigma, and offset. Note that actual mean values of gaussians are mean-offset.<br>
