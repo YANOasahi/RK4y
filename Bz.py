@@ -14,7 +14,7 @@ import position
 # if magnet has trim coils, Bz : B0z * B-X curve * trim * fringe
 # else if there is no trim coils, Bz : B0z * B-X curve * fringe
 # else input parameter is wrong...
-def Bz(trim, x, y):
+def bz(trim, x, y):
     if trim == 'trim':
         Bz = vc.B0z *\
             (vb.para_twz[0]+vb.para_twz[1]*(x/1000) +
