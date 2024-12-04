@@ -15,7 +15,7 @@ brho0 = 4.7447
 betax = 7.817
 
 # _______about particles_______
-step_time = 0.0001   # in ns
+step_time = 0.001   # in ns
 
 # _______basically we don't have to change below_______
 # current of the trim coils
@@ -37,3 +37,9 @@ amu = 931494061
 
 # light speed [m/s]
 c = 299792458
+
+# the half length of TARNII magnetic field
+length=525.0
+
+# aperture of TARNII
+aperture=80.0

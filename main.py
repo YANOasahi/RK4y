@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import variables_conditions as vc
 
 import Diff
+import Bz
+import position
 
 #  set brho
 j = 0.0
@@ -44,62 +46,93 @@ print(f'Beam energy is {energy*1E6} MeV/u')
 
 # ===== Runge-Kutta part =====
 # initialize variables
-px = mom
-py = 0.0
+vx = beta*np.sin(a_init/1000)
+vy = beta*np.cos(a_init/1000)
 x = vc.x0
 y = vc.y0
 t = 0.0
+step_time = vc.step_time*100*vc.c*1E-9
 # for plot
 plot_x = []
 plot_y = []
 plot_t = []
-# for wile loop
+# for wile loop. path is a flight length in mm
 path = 0.0
-number_step = 0.0
 
-while path < 6000:
+print('*******   Runge-Kutta parameters   *******')
+print(f'Initial vx is {vx}')
+print(f'Initial vy is {vy}')
+print(f'Initial x is {x}')
+print(f'Initial y is {y}')
+
+while path < 100:
     # calculate k1
-    px_k1 = vc.step_time*Diff.diff_px(x, y, v, gamma, 'trim')
-    py_k1 = vc.step_time*Diff.diff_px(x, y, v, gamma, 'trim')
-    x_k1 = vc.step_time*Diff.diff_x(px)
-    y_k1 = vc.step_time*Diff.diff_x(py)
+    x_k1 = vc.step_time*Diff.diff_x(vx)
+    y_k1 = vc.step_time*Diff.diff_y(vy)
+    vx_k1 = vc.step_time*Diff.diff_vx(x+x_k1, y+y_k1, vy, gamma)
+    vy_k1 = vc.step_time*Diff.diff_vx(x+x_k1, y+y_k1, vx, gamma)
     # calculate k2
-    px_k2 = vc.step_time*Diff.diff_px(x+x_k1/2, y+y_k1/2, v, gamma, 'trim')
-    py_k2 = vc.step_time*Diff.diff_px(x+x_k1/2, y+y_k1/2, v, gamma, 'trim')
-    x_k2 = vc.step_time*Diff.diff_x(px+px_k1/2)
-    y_k2 = vc.step_time*Diff.diff_x(py+py_k1/2)
+    x_k2 = vc.step_time*Diff.diff_x(vx+vx_k1/2)
+    y_k2 = vc.step_time*Diff.diff_y(vy+vy_k1/2)
+    vx_k2 = vc.step_time*Diff.diff_vx(x+x_k2/2, y+y_k2/2, vy+vy_k1/2, gamma)
+    vy_k2 = vc.step_time*Diff.diff_vx(x+x_k2/2, y+y_k2/2, vx+vx_k1/2, gamma)
     # calculate k3
-    px_k3 = vc.step_time*Diff.diff_px(x+x_k2/2, y+y_k2/2, v, gamma, 'trim')
-    py_k3 = vc.step_time*Diff.diff_px(x+x_k2/2, y+y_k2/2, v, gamma, 'trim')
-    x_k3 = vc.step_time*Diff.diff_x(px+px_k2/2)
-    y_k3 = vc.step_time*Diff.diff_x(py+py_k2/2)
+    x_k3 = vc.step_time*Diff.diff_x(vx+vx_k2/2)
+    y_k3 = vc.step_time*Diff.diff_y(vy+vy_k2/2)
+    vx_k3 = vc.step_time*Diff.diff_vx(x+x_k3/2, y+y_k3/2, vy+vy_k2/2, gamma)
+    vy_k3 = vc.step_time*Diff.diff_vx(x+x_k3/2, y+y_k3/2, vx+vx_k2/2, gamma)
     # calculate k4
-    px_k4 = vc.step_time*Diff.diff_px(x+x_k3, y+y_k3, v, gamma, 'trim')
-    py_k4 = vc.step_time*Diff.diff_px(x+x_k3, y+y_k3, v, gamma, 'trim')
-    x_k4 = vc.step_time*Diff.diff_x(px+px_k3)
-    y_k4 = vc.step_time*Diff.diff_x(py+py_k3)
+    x_k4 = vc.step_time*Diff.diff_x(vx+vx_k3)
+    y_k4 = vc.step_time*Diff.diff_y(vy+vy_k3)
+    vx_k4 = vc.step_time*Diff.diff_vx(x+x_k4, y+y_k4, vy+vy_k3, gamma)
+    vy_k4 = vc.step_time*Diff.diff_vx(x+x_k4, y+y_k4, vx+vx_k3, gamma)
     # calculate next steps
-    px_next = px+(px_k1 + 2*px_k2 + 2*px_k3 + px_k4)/6
-    py_next = py+(py_k1 + 2*py_k2 + 2*py_k3 + py_k4)/6
+    vx_next = vx+(vx_k1 + 2*vx_k2 + 2*vx_k3 + vx_k4)/6
+    vy_next = vy+(vy_k1 + 2*vy_k2 + 2*vy_k3 + vy_k4)/6
     x_next = x+(x_k1 + 2*x_k2 + 2*x_k3 + x_k4)/6
     y_next = y+(y_k1 + 2*y_k2 + 2*y_k3 + y_k4)/6
     plot_x.append(x)
     plot_y.append(y)
     plot_t.append(t)
+    # For debugging
+    if path == 0:
+        print(Bz.BforXplane(x, y))
+        check_pos = position.Position(x, y)
+        plot_magx_buf = np.zeros((6, 4))
+        plot_magy_buf = np.zeros((6, 4))
+        plot_magx = []
+        plot_magy = []
+        for i in range(6):
+            for j in range(4):
+                plot_magx_buf[i] = check_pos[i][0][j]
+                plot_magy_buf[i] = check_pos[i][1][j]
+                plot_magx.append(plot_magx_buf[i][j])
+                plot_magy.append(plot_magy_buf[i][j])
     # update variables
-    px = px_next
-    py = py_next
+    t += vc.step_time
+    path += v*vc.step_time
+    vx = vx_next
+    vy = vy_next
     x = x_next
     y = y_next
-    t += vc.step_time
-    number_step += 1
-    path += number_step*v
 
-box = plt.figure(figsize=(14, 6))
-fig1 = box.add_subplot(1, 2, 1)
-fig1 = plt.plot(plot_x, plot_y, linewidth=1, label='qx vs qy')
+print(len(plot_t))
+print(len(plot_magx))
+# print(plot_t)
+
+box1 = plt.figure(figsize=(7, 6))
+fig = box1.add_subplot(1, 1, 1)
+fig=plt.plot(plot_magx,plot_magy, marker='x', label='The center of magnets')
 plt.legend()
-fig2 = box.add_subplot(1, 2, 2)
-fig2 = plt.plot(plot_t, plot_x, linewidth=1, label='t vs qx')
+
+box2 = plt.figure(figsize=(17.5, 5))
+fig1 = box2.add_subplot(1, 3, 1)
+fig1 = plt.plot(plot_x, plot_y, linewidth=1, label='x vs y')
+plt.legend()
+fig2 = box2.add_subplot(1, 3, 2)
+fig2 = plt.plot(plot_t, plot_x, linewidth=1, label='t vs x')
+plt.legend()
+fig3 = box2.add_subplot(1, 3, 3)
+fig2 = plt.plot(plot_t, plot_y, linewidth=1, label='t vs y')
 plt.legend()
 plt.show()
