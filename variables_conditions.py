@@ -23,7 +23,7 @@ trim_current = [592.128, 1.958, 91.045, 226.784,
                 158.111, 146.1, 117.213, 280.012, 47.809, 279.008]
 
 # calculation is normalized by this current
-main_base = 1915
+main_base = 1915.0
 
 # set magnetic flux density
 B0z = 1.182166

@@ -95,6 +95,7 @@ def Position(x, y):
     # print(len(x_particle1))
     # print(x_particle1)
 
+    # the unit of x_particle is m, so it is devided by 1000
     pos = np.zeros((6, 2, 4))
     for i in range(4):
         pos[0][0][i] = x_particle1[i]/1000

@@ -65,7 +65,7 @@ print(f'Initial vy is {vy}')
 print(f'Initial x is {x}')
 print(f'Initial y is {y}')
 
-while path < 100:
+while path < 100000:
     # calculate k1
     x_k1 = vc.step_time*Diff.diff_x(vx)
     y_k1 = vc.step_time*Diff.diff_y(vy)
