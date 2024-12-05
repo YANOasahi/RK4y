@@ -1,11 +1,13 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
-import variables_conditions as vc
-
-import Diff
-import Bz
 import position
+import Bz
+import Diff
+import variables_conditions as vc
+import matplotlib.pyplot as plt
+import numpy as np
+import time
+# for measuring execution time
+start = time.perf_counter()
+
 
 #  set brho
 j = 0.0
@@ -51,7 +53,7 @@ vy = beta*np.cos(a_init/1000)
 x = vc.x0
 y = vc.y0
 t = 0.0
-step_time = vc.step_time*100*vc.c*1E-9
+step = vc.step_time*100*vc.c*1E-9
 # for plot
 plot_x = []
 plot_y = []
@@ -65,27 +67,27 @@ print(f'Initial vy is {vy}')
 print(f'Initial x is {x}')
 print(f'Initial y is {y}')
 
-while path < 100000:
+while path < 60250:
     # calculate k1
-    x_k1 = vc.step_time*Diff.diff_x(vx)
-    y_k1 = vc.step_time*Diff.diff_y(vy)
-    vx_k1 = vc.step_time*Diff.diff_vx(x+x_k1, y+y_k1, vy, gamma)
-    vy_k1 = vc.step_time*Diff.diff_vx(x+x_k1, y+y_k1, vx, gamma)
+    x_k1 = step*Diff.diff_x(vx)
+    y_k1 = step*Diff.diff_y(vy)
+    vx_k1 = step*Diff.diff_vx(x+x_k1, y+y_k1, vy, gamma)
+    vy_k1 = step*Diff.diff_vx(x+x_k1, y+y_k1, vx, gamma)
     # calculate k2
-    x_k2 = vc.step_time*Diff.diff_x(vx+vx_k1/2)
-    y_k2 = vc.step_time*Diff.diff_y(vy+vy_k1/2)
-    vx_k2 = vc.step_time*Diff.diff_vx(x+x_k2/2, y+y_k2/2, vy+vy_k1/2, gamma)
-    vy_k2 = vc.step_time*Diff.diff_vx(x+x_k2/2, y+y_k2/2, vx+vx_k1/2, gamma)
+    x_k2 = step*Diff.diff_x(vx+vx_k1/2)
+    y_k2 = step*Diff.diff_y(vy+vy_k1/2)
+    vx_k2 = step*Diff.diff_vx(x+x_k2/2, y+y_k2/2, vy+vy_k1/2, gamma)
+    vy_k2 = step*Diff.diff_vx(x+x_k2/2, y+y_k2/2, vx+vx_k1/2, gamma)
     # calculate k3
-    x_k3 = vc.step_time*Diff.diff_x(vx+vx_k2/2)
-    y_k3 = vc.step_time*Diff.diff_y(vy+vy_k2/2)
-    vx_k3 = vc.step_time*Diff.diff_vx(x+x_k3/2, y+y_k3/2, vy+vy_k2/2, gamma)
-    vy_k3 = vc.step_time*Diff.diff_vx(x+x_k3/2, y+y_k3/2, vx+vx_k2/2, gamma)
+    x_k3 = step*Diff.diff_x(vx+vx_k2/2)
+    y_k3 = step*Diff.diff_y(vy+vy_k2/2)
+    vx_k3 = step*Diff.diff_vx(x+x_k3/2, y+y_k3/2, vy+vy_k2/2, gamma)
+    vy_k3 = step*Diff.diff_vx(x+x_k3/2, y+y_k3/2, vx+vx_k2/2, gamma)
     # calculate k4
-    x_k4 = vc.step_time*Diff.diff_x(vx+vx_k3)
-    y_k4 = vc.step_time*Diff.diff_y(vy+vy_k3)
-    vx_k4 = vc.step_time*Diff.diff_vx(x+x_k4, y+y_k4, vy+vy_k3, gamma)
-    vy_k4 = vc.step_time*Diff.diff_vx(x+x_k4, y+y_k4, vx+vx_k3, gamma)
+    x_k4 = step*Diff.diff_x(vx+vx_k3)
+    y_k4 = step*Diff.diff_y(vy+vy_k3)
+    vx_k4 = step*Diff.diff_vx(x+x_k4, y+y_k4, vy+vy_k3, gamma)
+    vy_k4 = step*Diff.diff_vx(x+x_k4, y+y_k4, vx+vx_k3, gamma)
     # calculate next steps
     vx_next = vx+(vx_k1 + 2*vx_k2 + 2*vx_k3 + vx_k4)/6
     vy_next = vy+(vy_k1 + 2*vy_k2 + 2*vy_k3 + vy_k4)/6
@@ -94,20 +96,20 @@ while path < 100000:
     plot_x.append(x)
     plot_y.append(y)
     plot_t.append(t)
-    # For debugging
-    if path == 0:
-        print(Bz.BforXplane(x, y))
-        check_pos = position.Position(x, y)
-        plot_magx_buf = np.zeros((6, 4))
-        plot_magy_buf = np.zeros((6, 4))
-        plot_magx = []
-        plot_magy = []
-        for i in range(6):
-            for j in range(4):
-                plot_magx_buf[i] = check_pos[i][0][j]
-                plot_magy_buf[i] = check_pos[i][1][j]
-                plot_magx.append(plot_magx_buf[i][j])
-                plot_magy.append(plot_magy_buf[i][j])
+    # # For debugging
+    # if path == 0:
+    #     # print(Bz.BforXplane(x, y))
+    #     check_pos = position.Position(x, y)
+    #     plot_magx_buf = np.zeros((6, 4))
+    #     plot_magy_buf = np.zeros((6, 4))
+    #     plot_magx = []
+    #     plot_magy = []
+    #     for i in range(6):
+    #         for j in range(4):
+    #             plot_magx_buf[i] = check_pos[i][0][j]
+    #             plot_magy_buf[i] = check_pos[i][1][j]
+    #             plot_magx.append(plot_magx_buf[i][j])
+    #             plot_magy.append(plot_magy_buf[i][j])
     # update variables
     t += vc.step_time
     path += v*vc.step_time
@@ -117,13 +119,27 @@ while path < 100000:
     y = y_next
 
 print(len(plot_t))
-print(len(plot_magx))
+# print(len(plot_magx))
 # print(plot_t)
 
-box1 = plt.figure(figsize=(7, 6))
-fig = box1.add_subplot(1, 1, 1)
-fig=plt.plot(plot_magx,plot_magy, marker='x', label='The center of magnets')
-plt.legend()
+# box1 = plt.figure(figsize=(7, 6))
+# fig = box1.add_subplot(1, 1, 1)
+# fig=plt.plot(plot_magx,plot_magy, marker='x', label='The center of magnets')
+# plt.legend()
+
+# making output file
+outfile = open('main_outpit.dat', 'w')
+for i in range(len(plot_x)):
+    outfile.write(f'{plot_t[i]} {plot_x[i]} {plot_y[i]}')
+outfile.close
+
+print('*******   Revolution time   *******')
+print(f'{t} ns')
+
+# execution time measurement is stopped
+end = time.perf_counter()
+print('*******   Execution time is   *******')
+print((end-start)/6)
 
 box2 = plt.figure(figsize=(17.5, 5))
 fig1 = box2.add_subplot(1, 3, 1)
@@ -135,4 +151,22 @@ plt.legend()
 fig3 = box2.add_subplot(1, 3, 3)
 fig2 = plt.plot(plot_t, plot_y, linewidth=1, label='t vs y')
 plt.legend()
+
+# comparing yano-results and abe-san-results
+box3 = plt.figure(figsize=(7, 6))
+fig3_1 = box3.add_subplot(1, 1, 1)
+fig3_1 = plt.plot(plot_x, plot_y, linewidth=1, label='yano')
+plt.legend()
+# open and read abe-san-result
+openfile = open('./search_output/kidou_emi_0_dp_0.00_mx_0.dat', 'rt')
+x_list = []
+y_list = []
+for line in openfile:
+    data = line[:-1].split(' ')
+    x_list.append(float(data[1]))
+    y_list.append(float(data[2]))
+
+fig3_1 = plt.plot(x_list, y_list, color='RED', linewidth=1, label='abe-san')
+plt.legend()
+
 plt.show()

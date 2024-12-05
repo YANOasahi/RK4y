@@ -26,7 +26,7 @@ def bz(trim, x, y):
         if Bz < 0:
             return 0
         else:
-            Bz = Bz+FourGaussian.Btrim_Sum(x)
+            Bz = Bz+FourGaussian.Btrim_Sum(x*100)
             Bz = Bz*Enge.enge(y)*-1
             return Bz
     elif trim == 'no_trim':
@@ -43,6 +43,7 @@ def bz(trim, x, y):
             return Bz
     else:
         print('You put a wrong input parameter!!')
+        print('Check Bz.py')
         Bz = 0
         return Bz
 
@@ -80,7 +81,7 @@ def BforXplane(x, y):
         bz('trim', pos[5][0][3], pos[5][1][3])
     return BforXplane
 
-
+# for plotting the map of magnetic field
 x_range = np.arange(-10000, 10000, 10)
 y_range = np.arange(-10000, 10000, 10)
 x, y = np.meshgrid(x_range, y_range)
@@ -90,12 +91,14 @@ z = BforXplane_vectorized(x, y)
 
 fig = plt.figure(figsize=(10.5, 9))
 ax = fig.add_subplot(projection='3d')
-ax.plot_wireframe(x, y, z)
+ax.plot_wireframe(x, y, -z)
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 ax.set_zlabel("B")
 plt.show()
 
+
+# # for plotting bz()
 # plot_x = np.arange(-0.25, 0.25, 0.001)
 
 # # put 0 into plot_B if B is smaller than 0
@@ -103,7 +106,7 @@ plt.show()
 #                       vb.para_twz[2] * (plot_x**2) + vb.para_twz[3] * (plot_x**3) +
 #                       vb.para_twz[4] * (plot_x**4) + vb.para_twz[5] * (plot_x**5) +
 #                       vb.para_twz[6] * (plot_x**6) + vb.para_twz[7] * (plot_x**7) +
-#                       vb.para_twz[8] * (plot_x**8)) < 0
+#                       vb.para_twz[8] * (plot_x**8) + FourGaussian.Btrim_Sum(plot_x*100)) < 0
 
 # plot_B = np.where(
 #     condition,
@@ -112,7 +115,8 @@ plt.show()
 #               vb.para_twz[2] * (plot_x**2) + vb.para_twz[3] * (plot_x**3) +
 #               vb.para_twz[4] * (plot_x**4) + vb.para_twz[5] * (plot_x**5) +
 #               vb.para_twz[6] * (plot_x**6) + vb.para_twz[7] * (plot_x**7) +
-#               vb.para_twz[8] * (plot_x**8))  # when condition is FALSE
+#               vb.para_twz[8] * (plot_x**8)) +
+#               FourGaussian.Btrim_Sum(plot_x*100)  # when condition is FALSE
 # )
 
 # fig2 = plt.figure(figsize=(10.5, 9))
