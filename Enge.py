@@ -16,12 +16,12 @@ def enge(x):
         return 0.0
 
 # def enge(x):
-#     return 1/(1+(np.exp(ve.enge[0]+((x/100)*ve.enge[1]) +
-#                         (((x/100)**2)*ve.enge[2])+(((x/100)**3)*ve.enge[3]) +
-#                         (((x/100)**4)*ve.enge[4])+(((x/100)**5)*ve.enge[5]))))
+#     return 1/(1+(np.exp(ve.enge[0]+(((x-250)/100)*ve.enge[1]) +
+#                         ((((x-250)/100)**2)*ve.enge[2])+((((x-250)/100)**3)*ve.enge[3]) +
+#                         ((((x-250)/100)**4)*ve.enge[4])+((((x-250)/100)**5)*ve.enge[5]))))
 
 
 # # check the shape of the function
-# x = np.arange(-1000, 1000, 1)
+# x = np.arange(-500+250, 500+250, 1)
 # plt.plot(x, enge(x))
 # plt.show()

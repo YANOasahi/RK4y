@@ -1,7 +1,7 @@
 # import some libraries
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import cuda, float64
+# from numba import cuda, float64
 
 # import variables defined by myself
 import variables_conditions as vc
@@ -27,7 +27,7 @@ def bz(trim, x, y):
         if Bz < 0:
             return 0
         else:
-            Bz = Bz+FourGaussian.Btrim_Sum(x/1000)
+            Bz = Bz+FourGaussian.Btrim_Sum(x*1000)
             Bz = Bz*Enge.enge(y)*-1
             return Bz
     elif trim == 'no_trim':
@@ -101,26 +101,30 @@ def BforXplane(x, y):
 
 # # for plotting bz()
 # plot_x = np.arange(-0.25, 0.25, 0.001)
+# plot_y = np.arange(-250, 250, 1)
 
 # # put 0 into plot_B if B is smaller than 0
-# condition = vc.B0z * (vb.para_twz[0] + vb.para_twz[1] * plot_x +
-#                       vb.para_twz[2] * (plot_x**2) + vb.para_twz[3] * (plot_x**3) +
-#                       vb.para_twz[4] * (plot_x**4) + vb.para_twz[5] * (plot_x**5) +
-#                       vb.para_twz[6] * (plot_x**6) + vb.para_twz[7] * (plot_x**7) +
-#                       vb.para_twz[8] * (plot_x**8) + FourGaussian.Btrim_Sum(plot_x*1000)) < 0
+# condition = vc.B0z * (vb.para_twz[0] + vb.para_twz[1] * (plot_x-0) +
+#                       vb.para_twz[2] * ((plot_x-0)**2) + vb.para_twz[3] * ((plot_x-0)**3) +
+#                       vb.para_twz[4] * ((plot_x-0)**4) + vb.para_twz[5] * ((plot_x-0)**5) +
+#                       vb.para_twz[6] * ((plot_x-0)**6) + vb.para_twz[7] * ((plot_x-0)**7) +
+#                       vb.para_twz[8] * ((plot_x-0)**8) + 
+#                       FourGaussian.Btrim_Sum((plot_x-0)*1000)) * Enge.enge(plot_y)*-1< 0
 
 # plot_B = np.where(
 #     condition,
 #     0,  # when condition is TRUE
-#     vc.B0z * (vb.para_twz[0] + vb.para_twz[1] * plot_x +
-#               vb.para_twz[2] * (plot_x**2) + vb.para_twz[3] * (plot_x**3) +
-#               vb.para_twz[4] * (plot_x**4) + vb.para_twz[5] * (plot_x**5) +
-#               vb.para_twz[6] * (plot_x**6) + vb.para_twz[7] * (plot_x**7) +
-#               vb.para_twz[8] * (plot_x**8)) +
-#               FourGaussian.Btrim_Sum(plot_x*1000)  # when condition is FALSE
+#     vc.B0z * (vb.para_twz[0] + vb.para_twz[1] * (plot_x-0) +
+#               vb.para_twz[2] * ((plot_x-0)**2) + vb.para_twz[3] * ((plot_x-0)**3) +
+#               vb.para_twz[4] * ((plot_x-0)**4) + vb.para_twz[5] * ((plot_x-0)**5) +
+#               vb.para_twz[6] * ((plot_x-0)**6) + vb.para_twz[7] * ((plot_x-0)**7) +
+#               vb.para_twz[8] * ((plot_x-0)**8)) +
+#               FourGaussian.Btrim_Sum((plot_x-0)*1000) * Enge.enge(plot_y)*-1   # when condition is FALSE
 # )
 
 # fig2 = plt.figure(figsize=(10.5, 9))
 # bx = fig2.add_subplot(1, 1, 1)
-# bx.plot(plot_x, plot_B)
+# bx.plot(plot_x*1000, plot_B, label='x-axis')
+# bx.plot(plot_y, plot_B, label='y-axis')
+# bx.legend()
 # plt.show()
