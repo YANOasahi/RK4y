@@ -1,6 +1,7 @@
 # import some libraries
 import numpy as np
 import matplotlib.pyplot as plt
+from numba import cuda, float64
 
 # import variables defined by myself
 import variables_conditions as vc
@@ -26,7 +27,7 @@ def bz(trim, x, y):
         if Bz < 0:
             return 0
         else:
-            Bz = Bz+FourGaussian.Btrim_Sum(x*100)
+            Bz = Bz+FourGaussian.Btrim_Sum(x/1000)
             Bz = Bz*Enge.enge(y)*-1
             return Bz
     elif trim == 'no_trim':
@@ -81,21 +82,21 @@ def BforXplane(x, y):
         bz('trim', pos[5][0][3], pos[5][1][3])
     return BforXplane
 
-# for plotting the map of magnetic field
-x_range = np.arange(-10000, 10000, 10)
-y_range = np.arange(-10000, 10000, 10)
-x, y = np.meshgrid(x_range, y_range)
-# Because BforXplane can only accept scalar, we need to vectorize
-BforXplane_vectorized = np.vectorize(BforXplane)
-z = BforXplane_vectorized(x, y)
+# # for plotting the map of magnetic field
+# x_range = np.arange(7500, 9500, 0.5)
+# y_range = np.arange(3500, 6500, 0.5)
+# x, y = np.meshgrid(x_range, y_range)
+# # Because BforXplane can only accept scalar, we need to vectorize
+# BforXplane_vectorized = np.vectorize(BforXplane)
+# z = BforXplane_vectorized(x, y)
 
-fig = plt.figure(figsize=(10.5, 9))
-ax = fig.add_subplot(projection='3d')
-ax.plot_wireframe(x, y, -z)
-ax.set_xlabel("x")
-ax.set_ylabel("y")
-ax.set_zlabel("B")
-plt.show()
+# fig = plt.figure(figsize=(10.5, 9))
+# ax = fig.add_subplot(projection='3d')
+# ax.plot_wireframe(x, y, -z)
+# ax.set_xlabel("x")
+# ax.set_ylabel("y")
+# ax.set_zlabel("B")
+# plt.show()
 
 
 # # for plotting bz()
@@ -106,7 +107,7 @@ plt.show()
 #                       vb.para_twz[2] * (plot_x**2) + vb.para_twz[3] * (plot_x**3) +
 #                       vb.para_twz[4] * (plot_x**4) + vb.para_twz[5] * (plot_x**5) +
 #                       vb.para_twz[6] * (plot_x**6) + vb.para_twz[7] * (plot_x**7) +
-#                       vb.para_twz[8] * (plot_x**8) + FourGaussian.Btrim_Sum(plot_x*100)) < 0
+#                       vb.para_twz[8] * (plot_x**8) + FourGaussian.Btrim_Sum(plot_x*1000)) < 0
 
 # plot_B = np.where(
 #     condition,
@@ -116,7 +117,7 @@ plt.show()
 #               vb.para_twz[4] * (plot_x**4) + vb.para_twz[5] * (plot_x**5) +
 #               vb.para_twz[6] * (plot_x**6) + vb.para_twz[7] * (plot_x**7) +
 #               vb.para_twz[8] * (plot_x**8)) +
-#               FourGaussian.Btrim_Sum(plot_x*100)  # when condition is FALSE
+#               FourGaussian.Btrim_Sum(plot_x*1000)  # when condition is FALSE
 # )
 
 # fig2 = plt.figure(figsize=(10.5, 9))

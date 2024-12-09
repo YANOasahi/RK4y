@@ -3,6 +3,7 @@ import Bz
 import Diff
 import variables_conditions as vc
 import matplotlib.pyplot as plt
+import variables_position as vp
 import numpy as np
 import time
 # for measuring execution time
@@ -26,7 +27,7 @@ a_init = k*a_bin - a_max
 dispersion = -3.3494*dp**6 + 2.2088*dp**5 + 1.5699*dp**4 - \
     0.731*dp**3 - 0.1573*dp**2 + 0.0121*dp + 7.0737
 
-# m/q
+# q/m
 MoQ = vc.mass/vc.z
 # momentum based on brho
 mom = vc.c*vc.z*brho*1E-6
@@ -136,11 +137,6 @@ outfile.close
 print('*******   Revolution time   *******')
 print(f'{t} ns')
 
-# execution time measurement is stopped
-end = time.perf_counter()
-print('*******   Execution time is   *******')
-print((end-start)/6)
-
 box2 = plt.figure(figsize=(17.5, 5))
 fig1 = box2.add_subplot(1, 3, 1)
 fig1 = plt.plot(plot_x, plot_y, linewidth=1, label='x vs y')
@@ -167,6 +163,20 @@ for line in openfile:
     y_list.append(float(data[2]))
 
 fig3_1 = plt.plot(x_list, y_list, color='RED', linewidth=1, label='abe-san')
+magnet_pos_x_flat = []
+for row in vp.magnet_pos_x:
+    magnet_pos_x_flat.extend(row)
+magnet_pos_y_flat = []
+for row in vp.magnet_pos_y:
+    magnet_pos_y_flat.extend(row)
+fig3_1 = plt.plot(magnet_pos_x_flat, magnet_pos_y_flat, 'x',
+                  color='GREEN', label='magnets')
+fig3_1 = plt.plot()
 plt.legend()
+
+# execution time measurement is stopped
+end = time.perf_counter()
+print('*******   Execution time is   *******')
+print((end-start))
 
 plt.show()
