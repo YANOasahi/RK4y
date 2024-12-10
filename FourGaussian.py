@@ -17,25 +17,15 @@ def Gaussian(x, amp, offset, mean, sigma):
 
 
 def Btrim_Sum(x):
-    # buf is a variable for temporary use
-    buf = 0.0
-    # Btrim is a list of 10 trim coils
-    Btrim = [(10)]
-    # Btrim_sum is used in Bz.py
-    Btrim_sum = 0.0
-
+    Btrim = np.zeros(10)
     for i in range(10):
-        for j in range(4):
-            buf += Gaussian(x, vf.amp[i][j], vf.offset[i][j],
-                            vf.mean[i][j], vf.sigma[i][j])
-            if j == 3:
-                Btrim.append(buf)
-                Btrim_sum += buf*vc.trim_current[i]/200
-
+        Btrim[i] = sum(Gaussian(x, vf.amp[i][j], vf.offset[i][j],
+                       vf.mean[i][j], vf.sigma[i][j]) for j in range(4))
+    Btrim_sum = np.sum(Btrim)
     return Btrim_sum
 
 
-# check the shape of the function
+# # check the shape of the function
 # x = np.arange(-300, 300, 0.5)
-# plt.plot(x, Btrim_Sum(x))
+# plt.plot(x, [Btrim_Sum(val)for val in x])
 # plt.show()
