@@ -27,5 +27,5 @@ def Btrim_Sum(x):
 
 # # check the shape of the function
 # x = np.arange(-300, 300, 0.5)
-# plt.plot(x, [Btrim_Sum(val)*100 for val in x])
+# plt.plot(x, [Btrim_Sum(val) for val in x])
 # plt.show()

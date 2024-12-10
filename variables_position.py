@@ -29,10 +29,10 @@ rad3 = np.zeros(6)
 rad4 = np.zeros(6)
 
 for i in range(6):
-    rad1[i] = -(7.5+i*60)*np.pi/180
-    rad2[i] = -(22.5+i*60)*np.pi/180
-    rad3[i] = -(37.5+i*60)*np.pi/180
-    rad4[i] = -(52.5+i*60)*np.pi/180
+    rad1[i] = (7.5+i*60)
+    rad2[i] = (22.5+i*60)
+    rad3[i] = (37.5+i*60)
+    rad4[i] = (52.5+i*60)
 
 
 bend_angle = []
@@ -43,3 +43,4 @@ bend_angle = ((rad1[0], rad2[0], rad3[0], rad4[0]),
               (rad1[3], rad2[3], rad3[3], rad4[3]),
               (rad1[4], rad2[4], rad3[4], rad4[4]),
               (rad1[5], rad2[5], rad3[5], rad4[5]))
+
