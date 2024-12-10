@@ -705,7 +705,9 @@ tcur[9] = 256.791 ; // trim10 coil current
             gam = 1 / sqrt(1 - beta * beta);
             velocity = vc * beta * 1E-6; // [mm/ns]
             //////////////////////////////////////////
-
+            // printf("beta is %lf \n",beta);
+            // printf("gamma is %lf \n",gam);
+            // printf("velocity is %lf \n",velocity);
             // printf("%lf %lf %lf %lf \n", dp, brho, beta, velocity);
             if (m == -1)
             {
@@ -728,6 +730,10 @@ tcur[9] = 256.791 ; // trim10 coil current
 
             vx1 = beta * sin(ainit / 1000);
             vy1 = beta * cos(ainit / 1000);
+            printf("x1 is %lf \n", x1);
+            printf("y1 is %lf \n", y1);
+            printf("vx1 is %lf \n", vx1);
+            printf("vy1 is %lf \n", vy1);
 
             t = 0.0;
             t1 = 0.0;
@@ -760,6 +766,9 @@ tcur[9] = 256.791 ; // trim10 coil current
               kx1 = dt * vx1;
               ky1 = dt * vy1;
               getmag(x1 + kx1, y1 + ky1, &fac, mcur, tcur);
+              // printf("x1 + kx1 is %lf \n", x1 + kx1);
+              // printf("y1 + ky1 is %lf \n", y1 + ky1);
+              // printf("tcur is %lf \n", tcur);
               hx1 = dt * vy1 * fac;
               hy1 = -dt * vx1 * fac;
 

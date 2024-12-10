@@ -40,6 +40,9 @@ beta = ((vc.c*vc.z*brho)/(vc.amu*vc.mass))/np.sqrt(((vc.c*vc.z*brho) /
 gamma = 1/np.sqrt(1-beta**2)
 # velocity of the beam [mm/ns]
 v = vc.c*beta*1E-6
+# print(f'***  beta is {beta}  ***')
+# print(f'***  gamma is {gamma}  ***')
+# print(f'***  velocity is {v}  ***')
 
 print('*******    Initial conditions    *******')
 print(f'Proton number of the beam is {vc.z}')
@@ -51,8 +54,10 @@ print(f'Beam energy is {energy*1E6} MeV/u')
 # initialize variables
 vx = beta*np.sin(a_init/1000)
 vy = beta*np.cos(a_init/1000)
-x = vc.x0
-y = vc.y0
+# print(f'***  vx is {vx}  ***')
+# print(f'***  vy is {vy}  ***')
+x = vc.x0/1000   # convert mm to m
+y = vc.y0/1000   # convert mm to m
 t = 0.0
 step = vc.step_time*100*vc.c*1E-9
 # for plot
@@ -68,12 +73,14 @@ print(f'Initial vy is {vy}')
 print(f'Initial x is {x}')
 print(f'Initial y is {y}')
 
-while path < 60250:
+while path < 20250:
     # calculate k1
     x_k1 = step*Diff.diff_x(vx)
     y_k1 = step*Diff.diff_y(vy)
     vx_k1 = step*Diff.diff_vx(x+x_k1, y+y_k1, vy, gamma)
     vy_k1 = step*Diff.diff_vx(x+x_k1, y+y_k1, vx, gamma)
+    # print(f'x_k1 is {x_k1}')
+    # print(f'y_k1 is {y_k1}')
     # calculate k2
     x_k2 = step*Diff.diff_x(vx+vx_k1/2)
     y_k2 = step*Diff.diff_y(vy+vy_k1/2)
@@ -94,8 +101,8 @@ while path < 60250:
     vy_next = vy+(vy_k1 + 2*vy_k2 + 2*vy_k3 + vy_k4)/6
     x_next = x+(x_k1 + 2*x_k2 + 2*x_k3 + x_k4)/6
     y_next = y+(y_k1 + 2*y_k2 + 2*y_k3 + y_k4)/6
-    plot_x.append(x)
-    plot_y.append(y)
+    plot_x.append(x*1000)
+    plot_y.append(y*1000)
     plot_t.append(t)
     # # For debugging
     # if path == 0:
@@ -120,7 +127,7 @@ while path < 60250:
     y = y_next
 
 print('*******   Revolution time   *******')
-print(f'{len(plot_t)/1000} ns')
+print(f'{t} ns')
 # print(len(plot_magx))
 # print(plot_t)
 

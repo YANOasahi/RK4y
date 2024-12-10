@@ -59,37 +59,38 @@ def BforXplane(x, y):
     # print(magnet_x[0][0])
     # print(magnet_y[0][0])
     # print(bending_angle[0][0])
+    
     # calculate coordinate for each bending magnet
     # sector 1
-    sector1_1 = position.Position(x, y,magnet_x[0][0],magnet_y[0][0],bending_angle[0][0])
-    sector1_2 = position.Position(x, y,magnet_x[0][1],magnet_y[0][1],bending_angle[0][1])
-    sector1_3 = position.Position(x, y,magnet_x[0][2],magnet_y[0][2],bending_angle[0][2])
-    sector1_4 = position.Position(x, y,magnet_x[0][3],magnet_y[0][3],bending_angle[0][3])
+    sector1_1 = position.Position(x*1000, y*1000,magnet_x[0][0],magnet_y[0][0],bending_angle[0][0])
+    sector1_2 = position.Position(x*1000, y*1000,magnet_x[0][1],magnet_y[0][1],bending_angle[0][1])
+    sector1_3 = position.Position(x*1000, y*1000,magnet_x[0][2],magnet_y[0][2],bending_angle[0][2])
+    sector1_4 = position.Position(x*1000, y*1000,magnet_x[0][3],magnet_y[0][3],bending_angle[0][3])
     # sector 2
-    sector2_1 = position.Position(x, y,magnet_x[1][0],magnet_y[1][0],bending_angle[1][0])
-    sector2_2 = position.Position(x, y,magnet_x[1][1],magnet_y[1][1],bending_angle[1][1])
-    sector2_3 = position.Position(x, y,magnet_x[1][2],magnet_y[1][2],bending_angle[1][2])
-    sector2_4 = position.Position(x, y,magnet_x[1][3],magnet_y[1][3],bending_angle[1][3])
+    sector2_1 = position.Position(x*1000, y*1000,magnet_x[1][0],magnet_y[1][0],bending_angle[1][0])
+    sector2_2 = position.Position(x*1000, y*1000,magnet_x[1][1],magnet_y[1][1],bending_angle[1][1])
+    sector2_3 = position.Position(x*1000, y*1000,magnet_x[1][2],magnet_y[1][2],bending_angle[1][2])
+    sector2_4 = position.Position(x*1000, y*1000,magnet_x[1][3],magnet_y[1][3],bending_angle[1][3])
     # sector 3
-    sector3_1 = position.Position(x, y,magnet_x[2][0],magnet_y[2][0],bending_angle[2][0])
-    sector3_2 = position.Position(x, y,magnet_x[2][1],magnet_y[2][1],bending_angle[2][1])
-    sector3_3 = position.Position(x, y,magnet_x[2][2],magnet_y[2][2],bending_angle[2][2])
-    sector3_4 = position.Position(x, y,magnet_x[2][3],magnet_y[2][3],bending_angle[2][3])
+    sector3_1 = position.Position(x*1000, y*1000,magnet_x[2][0],magnet_y[2][0],bending_angle[2][0])
+    sector3_2 = position.Position(x*1000, y*1000,magnet_x[2][1],magnet_y[2][1],bending_angle[2][1])
+    sector3_3 = position.Position(x*1000, y*1000,magnet_x[2][2],magnet_y[2][2],bending_angle[2][2])
+    sector3_4 = position.Position(x*1000, y*1000,magnet_x[2][3],magnet_y[2][3],bending_angle[2][3])
     # sector 4
-    sector4_1 = position.Position(x, y,magnet_x[3][0],magnet_y[3][0],bending_angle[3][0])
-    sector4_2 = position.Position(x, y,magnet_x[3][1],magnet_y[3][1],bending_angle[3][1])
-    sector4_3 = position.Position(x, y,magnet_x[3][2],magnet_y[3][2],bending_angle[3][2])
-    sector4_4 = position.Position(x, y,magnet_x[3][3],magnet_y[3][3],bending_angle[3][3])
+    sector4_1 = position.Position(x*1000, y*1000,magnet_x[3][0],magnet_y[3][0],bending_angle[3][0])
+    sector4_2 = position.Position(x*1000, y*1000,magnet_x[3][1],magnet_y[3][1],bending_angle[3][1])
+    sector4_3 = position.Position(x*1000, y*1000,magnet_x[3][2],magnet_y[3][2],bending_angle[3][2])
+    sector4_4 = position.Position(x*1000, y*1000,magnet_x[3][3],magnet_y[3][3],bending_angle[3][3])
     # sector 5
-    sector5_1 = position.Position(x, y,magnet_x[4][0],magnet_y[4][0],bending_angle[4][0])
-    sector5_2 = position.Position(x, y,magnet_x[4][1],magnet_y[4][1],bending_angle[4][1])
-    sector5_3 = position.Position(x, y,magnet_x[4][2],magnet_y[4][2],bending_angle[4][2])
-    sector5_4 = position.Position(x, y,magnet_x[4][3],magnet_y[4][3],bending_angle[4][3])
+    sector5_1 = position.Position(x*1000, y*1000,magnet_x[4][0],magnet_y[4][0],bending_angle[4][0])
+    sector5_2 = position.Position(x*1000, y*1000,magnet_x[4][1],magnet_y[4][1],bending_angle[4][1])
+    sector5_3 = position.Position(x*1000, y*1000,magnet_x[4][2],magnet_y[4][2],bending_angle[4][2])
+    sector5_4 = position.Position(x*1000, y*1000,magnet_x[4][3],magnet_y[4][3],bending_angle[4][3])
     # sector 6
-    sector6_1 = position.Position(x, y,magnet_x[5][0],magnet_y[5][0],bending_angle[5][0])
-    sector6_2 = position.Position(x, y,magnet_x[5][1],magnet_y[5][1],bending_angle[5][1])
-    sector6_3 = position.Position(x, y,magnet_x[5][2],magnet_y[5][2],bending_angle[5][2])
-    sector6_4 = position.Position(x, y,magnet_x[5][3],magnet_y[5][3],bending_angle[5][3])
+    sector6_1 = position.Position(x*1000, y*1000,magnet_x[5][0],magnet_y[5][0],bending_angle[5][0])
+    sector6_2 = position.Position(x*1000, y*1000,magnet_x[5][1],magnet_y[5][1],bending_angle[5][1])
+    sector6_3 = position.Position(x*1000, y*1000,magnet_x[5][2],magnet_y[5][2],bending_angle[5][2])
+    sector6_4 = position.Position(x*1000, y*1000,magnet_x[5][3],magnet_y[5][3],bending_angle[5][3])
     
     BforXplane = bz('trim', sector1_1[0][0], sector1_1[0][1], sector1_1[0][2]) + \
               bz('no_trim', sector1_2[0][0], sector1_2[0][1], sector1_2[0][2]) + \
@@ -120,11 +121,16 @@ def BforXplane(x, y):
               bz('no_trim', sector6_2[0][0], sector6_2[0][1], sector6_2[0][2]) + \
               bz('no_trim', sector6_3[0][0], sector6_3[0][1], sector6_3[0][2]) + \
                  bz('trim', sector6_4[0][0], sector6_4[0][1], sector6_4[0][2])
+                 
+    # print(sector1_1)
+    # print(sector1_2)
+    # print(sector1_3)
+    # print(sector1_4)
     return BforXplane
 
 # # for plotting the map of magnetic field
-# x_range = np.arange(0, 10000, 10)
-# y_range = np.arange(0, 10000, 10)
+# x_range = np.arange(8800, 9500, 0.7)
+# y_range = np.arange(1800, 3200, 1.4)
 # X, Y = np.meshgrid(x_range, y_range)
 # Z = np.zeros_like(X)
 # # calculate BforXplane for each x_range and y_range
