@@ -20,12 +20,12 @@ def Btrim_Sum(x):
     Btrim = np.zeros(10)
     for i in range(10):
         Btrim[i] = sum(Gaussian(x, vf.amp[i][j], vf.offset[i][j],
-                       vf.mean[i][j], vf.sigma[i][j]) for j in range(4))
+                       vf.mean[i][j], vf.sigma[i][j]) for j in range(4))*vc.trim_current[i]/200
     Btrim_sum = np.sum(Btrim)
     return Btrim_sum
 
 
 # # check the shape of the function
 # x = np.arange(-300, 300, 0.5)
-# plt.plot(x, [Btrim_Sum(val)for val in x])
+# plt.plot(x, [Btrim_Sum(val)*100 for val in x])
 # plt.show()

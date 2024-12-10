@@ -112,14 +112,15 @@ while path < 60250:
     #             plot_magx.append(plot_magx_buf[i][j])
     #             plot_magy.append(plot_magy_buf[i][j])
     # update variables
-    t += vc.step_time
     path += v*vc.step_time
+    t += vc.step_time
     vx = vx_next
     vy = vy_next
     x = x_next
     y = y_next
 
-print(len(plot_t))
+print('*******   Revolution time   *******')
+print(f'{len(plot_t)/1000} ns')
 # print(len(plot_magx))
 # print(plot_t)
 
@@ -133,9 +134,6 @@ outfile = open('main_outpit.dat', 'w')
 for i in range(len(plot_x)):
     outfile.write(f'{plot_t[i]} {plot_x[i]} {plot_y[i]}')
 outfile.close
-
-print('*******   Revolution time   *******')
-print(f'{t} ns')
 
 box2 = plt.figure(figsize=(17.5, 5))
 fig1 = box2.add_subplot(1, 3, 1)

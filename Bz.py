@@ -1,11 +1,12 @@
 # import some libraries
 import numpy as np
 import matplotlib.pyplot as plt
-# from numba import cuda, float64
+from mpl_toolkits.mplot3d import Axes3D
 
 # import variables defined by myself
 import variables_conditions as vc
 import variables_Bz as vb
+import variables_position as vp
 
 # import functions made by myself
 import FourGaussian
@@ -17,86 +18,128 @@ import position
 # else if there is no trim coils, Bz : B0z * B-X curve * fringe
 # else input parameter is wrong...
 def bz(trim, x, y):
-    if trim == 'trim':
-        Bz = vc.B0z *\
-            (vb.para_twz[0]+vb.para_twz[1]*(x) +
-             vb.para_twz[2]*(x)**2+vb.para_twz[3]*(x)**3 +
-             vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
-             vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
-             vb.para_twz[8]*(x)**8)
-        if Bz < 0:
-            return 0
+    if (abs(x)<0.2) and (abs(y)<1000):
+        if trim == 'trim':
+            Bz = vc.B0z *\
+                (vb.para_twz[0]+vb.para_twz[1]*(x) +
+                 vb.para_twz[2]*(x)**2+vb.para_twz[3]*(x)**3 +
+                 vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
+                 vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
+                 vb.para_twz[8]*(x)**8)
+            if Bz < 0:
+                return 0
+            else:
+                Bz = Bz+(FourGaussian.Btrim_Sum(x)*100)
+                Bz = Bz*Enge.enge(y)*-1
+                return Bz
+        elif trim == 'no_trim':
+            Bz = vc.B0z *\
+                (vb.para_twz[0]+vb.para_twz[1]*(x) +
+                 vb.para_twz[2]*(x)**2+vb.para_twz[3]*(x)**3 +
+                 vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
+                 vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
+                 vb.para_twz[8]*(x)**8)
+            if Bz < 0:
+                return 0
+            else:
+                Bz = Bz*Enge.enge(y)*-1
+                return Bz
         else:
-            Bz = Bz+FourGaussian.Btrim_Sum(x*1000)
-            Bz = Bz*Enge.enge(y)*-1
-            return Bz
-    elif trim == 'no_trim':
-        Bz = vc.B0z *\
-            (vb.para_twz[0]+vb.para_twz[1]*(x) +
-             vb.para_twz[2]*(x)**2+vb.para_twz[3]*(x)**3 +
-             vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
-             vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
-             vb.para_twz[8]*(x)**8)
-        if Bz < 0:
+            print('You put a wrong input parameter!!')
+            print('Check Bz.py')
             return 0
-        else:
-            Bz = Bz*Enge.enge(y)*-1
-            return Bz
     else:
-        print('You put a wrong input parameter!!')
-        print('Check Bz.py')
-        Bz = 0
-        return Bz
+        return 0
 
 
 def BforXplane(x, y):
-    pos = position.Position(x, y)
-    BforXplane = bz('trim', pos[0][0][0], pos[0][1][0]) + \
-        bz('no_trim', pos[0][0][1], pos[0][1][1]) + \
-        bz('no_trim', pos[0][0][2], pos[0][1][2]) + \
-        bz('trim', pos[0][0][3], pos[0][1][3])
+    magnet_x = vp.magnet_pos_x
+    magnet_y = vp.magnet_pos_y
+    bending_angle = vp.bend_angle
+    # calculate coordinate for each bending magnet
+    # sector 1
+    sector1_1 = position.Position(x, y,magnet_x[0][0],magnet_y[0][0],bending_angle[0][0])
+    sector1_2 = position.Position(x, y,magnet_x[0][1],magnet_y[0][1],bending_angle[0][1])
+    sector1_3 = position.Position(x, y,magnet_x[0][2],magnet_y[0][2],bending_angle[0][2])
+    sector1_4 = position.Position(x, y,magnet_x[0][3],magnet_y[0][3],bending_angle[0][3])
+    # sector 2
+    sector2_1 = position.Position(x, y,magnet_x[1][0],magnet_y[1][0],bending_angle[1][0])
+    sector2_2 = position.Position(x, y,magnet_x[1][1],magnet_y[1][1],bending_angle[1][1])
+    sector2_3 = position.Position(x, y,magnet_x[1][2],magnet_y[1][2],bending_angle[1][2])
+    sector2_4 = position.Position(x, y,magnet_x[1][3],magnet_y[1][3],bending_angle[1][3])
+    # sector 3
+    sector3_1 = position.Position(x, y,magnet_x[2][0],magnet_y[2][0],bending_angle[2][0])
+    sector3_2 = position.Position(x, y,magnet_x[2][1],magnet_y[2][1],bending_angle[2][1])
+    sector3_3 = position.Position(x, y,magnet_x[2][2],magnet_y[2][2],bending_angle[2][2])
+    sector3_4 = position.Position(x, y,magnet_x[2][3],magnet_y[2][3],bending_angle[2][3])
+    # sector 4
+    sector4_1 = position.Position(x, y,magnet_x[3][0],magnet_y[3][0],bending_angle[3][0])
+    sector4_2 = position.Position(x, y,magnet_x[3][1],magnet_y[3][1],bending_angle[3][1])
+    sector4_3 = position.Position(x, y,magnet_x[3][2],magnet_y[3][2],bending_angle[3][2])
+    sector4_4 = position.Position(x, y,magnet_x[3][3],magnet_y[3][3],bending_angle[3][3])
+    # sector 5
+    sector5_1 = position.Position(x, y,magnet_x[4][0],magnet_y[4][0],bending_angle[4][0])
+    sector5_2 = position.Position(x, y,magnet_x[4][1],magnet_y[4][1],bending_angle[4][1])
+    sector5_3 = position.Position(x, y,magnet_x[4][2],magnet_y[4][2],bending_angle[4][2])
+    sector5_4 = position.Position(x, y,magnet_x[4][3],magnet_y[4][3],bending_angle[4][3])
+    # sector 6
+    sector6_1 = position.Position(x, y,magnet_x[5][0],magnet_y[5][0],bending_angle[5][0])
+    sector6_2 = position.Position(x, y,magnet_x[5][1],magnet_y[5][1],bending_angle[5][1])
+    sector6_3 = position.Position(x, y,magnet_x[5][2],magnet_y[5][2],bending_angle[5][2])
+    sector6_4 = position.Position(x, y,magnet_x[5][3],magnet_y[5][3],bending_angle[5][3])
+    
+    BforXplane = bz('trim', sector1_1[0][0], sector1_1[0][1]) + \
+              bz('no_trim', sector1_2[0][0], sector1_2[0][1]) + \
+              bz('no_trim', sector1_3[0][0], sector1_3[0][1]) + \
+                 bz('trim', sector1_4[0][0], sector1_4[0][1])
     BforXplane = BforXplane + \
-        bz('trim', pos[1][0][0], pos[1][1][0]) + \
-        bz('no_trim', pos[1][0][1], pos[1][1][1]) + \
-        bz('no_trim', pos[1][0][2], pos[1][1][2]) + \
-        bz('trim', pos[1][0][3], pos[1][1][3])
+                 bz('trim', sector2_1[0][0], sector2_1[0][1]) + \
+              bz('no_trim', sector2_2[0][0], sector2_2[0][1]) + \
+              bz('no_trim', sector2_3[0][0], sector2_3[0][1]) + \
+                 bz('trim', sector2_4[0][0], sector2_4[0][1])
     BforXplane = BforXplane + \
-        bz('trim', pos[2][0][0], pos[2][1][0]) + \
-        bz('no_trim', pos[2][0][1], pos[2][1][1]) + \
-        bz('no_trim', pos[2][0][2], pos[2][1][2]) + \
-        bz('trim', pos[2][0][3], pos[2][1][3])
+                 bz('trim', sector3_1[0][0], sector3_1[0][1]) + \
+              bz('no_trim', sector3_2[0][0], sector3_2[0][1]) + \
+              bz('no_trim', sector3_3[0][0], sector3_3[0][1]) + \
+                 bz('trim', sector3_4[0][0], sector3_4[0][1])
     BforXplane = BforXplane + \
-        bz('trim', pos[3][0][0], pos[3][1][0]) + \
-        bz('no_trim', pos[3][0][1], pos[3][1][1]) + \
-        bz('no_trim', pos[3][0][2], pos[3][1][2]) + \
-        bz('trim', pos[3][0][3], pos[3][1][3])
+                 bz('trim', sector4_1[0][0], sector4_1[0][1]) + \
+              bz('no_trim', sector4_2[0][0], sector4_2[0][1]) + \
+              bz('no_trim', sector4_3[0][0], sector4_3[0][1]) + \
+                 bz('trim', sector4_4[0][0], sector4_4[0][1])
     BforXplane = BforXplane + \
-        bz('trim', pos[4][0][0], pos[4][1][0]) + \
-        bz('no_trim', pos[4][0][1], pos[4][1][1]) + \
-        bz('no_trim', pos[4][0][2], pos[4][1][2]) + \
-        bz('trim', pos[4][0][3], pos[4][1][3])
+                 bz('trim', sector5_1[0][0], sector5_1[0][1]) + \
+              bz('no_trim', sector5_2[0][0], sector5_2[0][1]) + \
+              bz('no_trim', sector5_3[0][0], sector5_3[0][1]) + \
+                 bz('trim', sector5_4[0][0], sector5_4[0][1])
     BforXplane = BforXplane + \
-        bz('trim', pos[5][0][0], pos[5][1][0]) + \
-        bz('no_trim', pos[5][0][1], pos[5][1][1]) + \
-        bz('no_trim', pos[5][0][2], pos[5][1][2]) + \
-        bz('trim', pos[5][0][3], pos[5][1][3])
+                 bz('trim', sector6_1[0][0], sector6_1[0][1]) + \
+              bz('no_trim', sector6_2[0][0], sector6_2[0][1]) + \
+              bz('no_trim', sector6_3[0][0], sector6_3[0][1]) + \
+                 bz('trim', sector6_4[0][0], sector6_4[0][1])
     return BforXplane
 
-# # for plotting the map of magnetic field
-# x_range = np.arange(7500, 9500, 0.5)
-# y_range = np.arange(3500, 6500, 0.5)
-# x, y = np.meshgrid(x_range, y_range)
-# # Because BforXplane can only accept scalar, we need to vectorize
-# BforXplane_vectorized = np.vectorize(BforXplane)
-# z = BforXplane_vectorized(x, y)
+# for plotting the map of magnetic field
+x_range = np.arange(7500, 9500, 2)
+y_range = np.arange(0, 3500, 2)
+X, Y = np.meshgrid(x_range, y_range)
+Z = np.zeros_like(X)
 
-# fig = plt.figure(figsize=(10.5, 9))
-# ax = fig.add_subplot(projection='3d')
-# ax.plot_wireframe(x, y, -z)
-# ax.set_xlabel("x")
-# ax.set_ylabel("y")
-# ax.set_zlabel("B")
-# plt.show()
+# 各 x, y の組み合わせに対して BforXplane を計算
+for i in range(X.shape[0]):
+    for j in range(X.shape[1]):
+        x, y = X[i, j], Y[i, j]
+        Z[i, j] = BforXplane(x, y)  # BforXplane を使用
+# 3Dプロット
+fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_wireframe(X, Y, -Z, color='blue', linewidth=0.7)
+# ラベルとタイトル
+ax.set_title('3D Wireframe of BforXplane', fontsize=14)
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('BforXplane')
+plt.show()
 
 
 # # for plotting bz()

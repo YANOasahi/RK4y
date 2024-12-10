@@ -15,7 +15,7 @@ brho0 = 4.7447
 betax = 7.817
 
 # _______about particles_______
-step_time = 0.001   # in ns
+step_time = 0.01   # in ns
 
 # _______basically we don't have to change below_______
 # current of the trim coils

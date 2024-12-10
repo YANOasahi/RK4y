@@ -35,11 +35,11 @@ for i in range(6):
     rad4[i] = -(52.5+i*60)*np.pi/180
 
 
-bending_angle = []
+bend_angle = []
 
-bending_angle = ((rad1[0], rad2[0], rad3[0], rad4[0]),
-                 (rad1[1], rad2[1], rad3[1], rad4[1]),
-                 (rad1[2], rad2[2], rad3[2], rad4[2]),
-                 (rad1[3], rad2[3], rad3[3], rad4[3]),
-                 (rad1[4], rad2[4], rad3[4], rad4[4]),
-                 (rad1[5], rad2[5], rad3[5], rad4[5]))
+bend_angle = ((rad1[0], rad2[0], rad3[0], rad4[0]),
+              (rad1[1], rad2[1], rad3[1], rad4[1]),
+              (rad1[2], rad2[2], rad3[2], rad4[2]),
+              (rad1[3], rad2[3], rad3[3], rad4[3]),
+              (rad1[4], rad2[4], rad3[4], rad4[4]),
+              (rad1[5], rad2[5], rad3[5], rad4[5]))
