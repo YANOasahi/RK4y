@@ -1,11 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-import variables_position as vp
 import variables_conditions as vc
 import Diff
-import Bz
-import position
 
 # for measuring execution time
 start = time.perf_counter()
