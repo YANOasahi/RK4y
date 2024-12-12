@@ -62,6 +62,7 @@ def BforXplane(x, y):
 
     # calculate coordinate for each bending magnet
     # sector 1
+    # note that x and y are converted to mm from m
     sector1_1 = position.Position(
         x*1000, y*1000, magnet_x[0][0], magnet_y[0][0], bending_angle[0][0])
     sector1_2 = position.Position(
@@ -116,6 +117,8 @@ def BforXplane(x, y):
     sector6_4 = position.Position(
         x*1000, y*1000, magnet_x[5][3], magnet_y[5][3], bending_angle[5][3])
 
+    # [0][0] means x2 in abe-san's code, [0][1] means xpos in abe-san's code,
+    # and [0][2] means dy in abe-san's code
     BforXplane = bz('trim', sector1_1[0][0], sector1_1[0][1], sector1_1[0][2]) + \
         bz('no_trim', sector1_2[0][0], sector1_2[0][1], sector1_2[0][2]) + \
         bz('no_trim', sector1_3[0][0], sector1_3[0][1], sector1_3[0][2]) + \
@@ -146,10 +149,6 @@ def BforXplane(x, y):
         bz('no_trim', sector6_3[0][0], sector6_3[0][1], sector6_3[0][2]) + \
         bz('trim', sector6_4[0][0], sector6_4[0][1], sector6_4[0][2])
 
-    # print(sector1_1)
-    # print(sector1_2)
-    # print(sector1_3)
-    # print(sector1_4)
     return BforXplane
 
 
@@ -171,10 +170,6 @@ def BforXplane(x, y):
 # ax.set_xlabel('X')
 # ax.set_ylabel('Y')
 # ax.set_zlabel('BforXplane')
-# # the positions of the magnets
-# for i in range(vp.magnet_pos_x.shape[0]):
-#     ax.scatter(vp.magnet_pos_x[i] * 1000, vp.magnet_pos_y[i] * 1000, 0,
-#                color='red', s=50, label=f'Magnet {i + 1}' if i == 0 else None)
 # plt.show()
 
 

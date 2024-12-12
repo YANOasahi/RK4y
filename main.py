@@ -59,6 +59,8 @@ step = vc.step_time*100*vc.c*1E-9
 # for plot
 plot_x = []
 plot_y = []
+plot_vx = []
+plot_vy = []
 plot_t = []
 # for wile loop. path is a flight length in mm
 path = 0.0
@@ -69,27 +71,27 @@ print(f'Initial vy is {vy}')
 print(f'Initial x is {x}')
 print(f'Initial y is {y}')
 
-while path < 602.5:
+while path < 603.5:
     # calculate k1
     x_k1 = step*Diff.diff_x(vx)
     y_k1 = step*Diff.diff_y(vy)
     vx_k1 = step*Diff.diff_vx(x+x_k1, y+y_k1, vy, gamma)
-    vy_k1 = step*Diff.diff_vx(x+x_k1, y+y_k1, vx, gamma)
+    vy_k1 = step*Diff.diff_vy(x+x_k1, y+y_k1, vx, gamma)
     # calculate k2
     x_k2 = step*Diff.diff_x(vx+vx_k1/2)
     y_k2 = step*Diff.diff_y(vy+vy_k1/2)
     vx_k2 = step*Diff.diff_vx(x+x_k2/2, y+y_k2/2, vy+vy_k1/2, gamma)
-    vy_k2 = step*Diff.diff_vx(x+x_k2/2, y+y_k2/2, vx+vx_k1/2, gamma)
+    vy_k2 = step*Diff.diff_vy(x+x_k2/2, y+y_k2/2, vx+vx_k1/2, gamma)
     # calculate k3
     x_k3 = step*Diff.diff_x(vx+vx_k2/2)
     y_k3 = step*Diff.diff_y(vy+vy_k2/2)
     vx_k3 = step*Diff.diff_vx(x+x_k3/2, y+y_k3/2, vy+vy_k2/2, gamma)
-    vy_k3 = step*Diff.diff_vx(x+x_k3/2, y+y_k3/2, vx+vx_k2/2, gamma)
+    vy_k3 = step*Diff.diff_vy(x+x_k3/2, y+y_k3/2, vx+vx_k2/2, gamma)
     # calculate k4
     x_k4 = step*Diff.diff_x(vx+vx_k3)
     y_k4 = step*Diff.diff_y(vy+vy_k3)
     vx_k4 = step*Diff.diff_vx(x+x_k4, y+y_k4, vy+vy_k3, gamma)
-    vy_k4 = step*Diff.diff_vx(x+x_k4, y+y_k4, vx+vx_k3, gamma)
+    vy_k4 = step*Diff.diff_vy(x+x_k4, y+y_k4, vx+vx_k3, gamma)
     # calculate next steps
     vx_next = vx+(vx_k1 + 2*vx_k2 + 2*vx_k3 + vx_k4)/6
     vy_next = vy+(vy_k1 + 2*vy_k2 + 2*vy_k3 + vy_k4)/6
@@ -97,7 +99,9 @@ while path < 602.5:
     y_next = y+(y_k1 + 2*y_k2 + 2*y_k3 + y_k4)/6
     plot_x.append(x*1000)
     plot_y.append(y*1000)
-    plot_t.append(t)
+    plot_vx.append(vx)
+    plot_vy.append(vy)
+    plot_t.append(t*1000)
     # update variables
     path += v*vc.step_time
     t += vc.step_time
@@ -107,7 +111,7 @@ while path < 602.5:
     y = y_next
 
 print('*******   Revolution time   *******')
-print(f'{t} ns')
+print(f'{t*1000} ns')
 
 # making output file
 outfile = open('main_outpit.dat', 'w')
@@ -150,6 +154,14 @@ for row in vp.magnet_pos_y:
 fig3_1 = plt.plot(magnet_pos_x_flat, magnet_pos_y_flat, 'x',
                   color='GREEN', label='magnets')
 fig3_1 = plt.plot()
+plt.legend()
+
+box4 = plt.figure(figsize=(17.5, 5))
+fig4_1 = box4.add_subplot(1, 2, 1)
+fig4_1 = plt.plot(plot_t, plot_vx, linewidth=1, label='t vs vx')
+plt.legend()
+fig4_2 = box4.add_subplot(1, 2, 2)
+fig4_2 = plt.plot(plot_t, plot_vy, linewidth=1, label='t vs vy')
 plt.legend()
 
 # execution time measurement is stopped
