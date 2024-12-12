@@ -83,7 +83,7 @@ while stop_flag < 1:
     t += step
     if (x > 0) and (y < 0):
         stop_flag = 0.5
-    if (y > 0) and (stop_flag == 0.5):
+    if ((y > 0) and (stop_flag == 0.5)) or (t*1E9/vc.c>500):
         stop_flag = 1
 
 print('******* Revolution time *******')
@@ -106,6 +106,10 @@ plt.legend()
 end = time.perf_counter()
 print('******* Execution time *******')
 print(f'{end - start:.2f} seconds')
+if t*1E9/vc.c>500:
+    print('!!! something strange !!!')
+    print('!!! Revolution time is too long !!!')
+    print('!!! At first, check step_time in variables_conditions !!!')
 
 plt.show()
 
