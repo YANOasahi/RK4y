@@ -76,14 +76,14 @@ while stop_flag < 1:
 
     plot_x.append(x * 1000)
     plot_y.append(y * 1000)
-    plot_vx.append(vx)
-    plot_vy.append(vy)
+    # plot_vx.append(vx)
+    # plot_vy.append(vy)
     plot_t.append(t*1E9/vc.c)
 
     t += step
-    if (y < 0) and (x > 0):
+    if (x > 0) and (y < 0):
         stop_flag = 0.5
-    if (stop_flag == 0.5) and (y > 0):
+    if (y > 0) and (stop_flag == 0.5):
         stop_flag = 1
 
 print('******* Revolution time *******')
@@ -93,7 +93,7 @@ print('*******   The number of iterations   *******')
 print(f'{len(plot_t)} times')
 
 # Plot results
-plt.figure(figsize=(12, 6))
+plt.figure(figsize=(14, 6))
 plt.subplot(1, 2, 1)
 plt.plot(plot_x, plot_y, label="x-y Trajectory")
 plt.legend()
