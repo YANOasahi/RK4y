@@ -53,103 +53,36 @@ def bz(trim, x_diff, x, y):
 
 
 def BforXplane(x, y):
-    magnet_x = vp.magnet_pos_x
-    magnet_y = vp.magnet_pos_y
-    bending_angle = vp.bend_angle
-    # print(magnet_x[0][0])
-    # print(magnet_y[0][0])
-    # print(bending_angle[0][0])
+    # Prepare required variables
+    magnet_x = np.array(vp.magnet_pos_x)
+    magnet_y = np.array(vp.magnet_pos_y)
+    bending_angle = np.array(vp.bend_angle)
+    
+    sectors = []
+    BforXplane = 0
+    
+    # Convert x and y to mm from m
+    x_mm, y_mm = x * 1000, y * 1000
 
-    # calculate coordinate for each bending magnet
-    # sector 1
-    # note that x and y are converted to mm from m
-    sector1_1 = position.Position(
-        x*1000, y*1000, magnet_x[0][0], magnet_y[0][0], bending_angle[0][0])
-    sector1_2 = position.Position(
-        x*1000, y*1000, magnet_x[0][1], magnet_y[0][1], bending_angle[0][1])
-    sector1_3 = position.Position(
-        x*1000, y*1000, magnet_x[0][2], magnet_y[0][2], bending_angle[0][2])
-    sector1_4 = position.Position(
-        x*1000, y*1000, magnet_x[0][3], magnet_y[0][3], bending_angle[0][3])
-    # sector 2
-    sector2_1 = position.Position(
-        x*1000, y*1000, magnet_x[1][0], magnet_y[1][0], bending_angle[1][0])
-    sector2_2 = position.Position(
-        x*1000, y*1000, magnet_x[1][1], magnet_y[1][1], bending_angle[1][1])
-    sector2_3 = position.Position(
-        x*1000, y*1000, magnet_x[1][2], magnet_y[1][2], bending_angle[1][2])
-    sector2_4 = position.Position(
-        x*1000, y*1000, magnet_x[1][3], magnet_y[1][3], bending_angle[1][3])
-    # sector 3
-    sector3_1 = position.Position(
-        x*1000, y*1000, magnet_x[2][0], magnet_y[2][0], bending_angle[2][0])
-    sector3_2 = position.Position(
-        x*1000, y*1000, magnet_x[2][1], magnet_y[2][1], bending_angle[2][1])
-    sector3_3 = position.Position(
-        x*1000, y*1000, magnet_x[2][2], magnet_y[2][2], bending_angle[2][2])
-    sector3_4 = position.Position(
-        x*1000, y*1000, magnet_x[2][3], magnet_y[2][3], bending_angle[2][3])
-    # sector 4
-    sector4_1 = position.Position(
-        x*1000, y*1000, magnet_x[3][0], magnet_y[3][0], bending_angle[3][0])
-    sector4_2 = position.Position(
-        x*1000, y*1000, magnet_x[3][1], magnet_y[3][1], bending_angle[3][1])
-    sector4_3 = position.Position(
-        x*1000, y*1000, magnet_x[3][2], magnet_y[3][2], bending_angle[3][2])
-    sector4_4 = position.Position(
-        x*1000, y*1000, magnet_x[3][3], magnet_y[3][3], bending_angle[3][3])
-    # sector 5
-    sector5_1 = position.Position(
-        x*1000, y*1000, magnet_x[4][0], magnet_y[4][0], bending_angle[4][0])
-    sector5_2 = position.Position(
-        x*1000, y*1000, magnet_x[4][1], magnet_y[4][1], bending_angle[4][1])
-    sector5_3 = position.Position(
-        x*1000, y*1000, magnet_x[4][2], magnet_y[4][2], bending_angle[4][2])
-    sector5_4 = position.Position(
-        x*1000, y*1000, magnet_x[4][3], magnet_y[4][3], bending_angle[4][3])
-    # sector 6
-    sector6_1 = position.Position(
-        x*1000, y*1000, magnet_x[5][0], magnet_y[5][0], bending_angle[5][0])
-    sector6_2 = position.Position(
-        x*1000, y*1000, magnet_x[5][1], magnet_y[5][1], bending_angle[5][1])
-    sector6_3 = position.Position(
-        x*1000, y*1000, magnet_x[5][2], magnet_y[5][2], bending_angle[5][2])
-    sector6_4 = position.Position(
-        x*1000, y*1000, magnet_x[5][3], magnet_y[5][3], bending_angle[5][3])
+    # Calculate positions for each magnet sector
+    for i in range(magnet_x.shape[0]):  # Loop over sectors
+        sector = []
+        for j in range(magnet_x.shape[1]):  # Loop over magnets in a sector
+            sector.append(
+                position.Position(
+                    x_mm, y_mm, magnet_x[i, j], magnet_y[i, j], bending_angle[i, j]
+                )
+            )
+        sectors.append(sector)
 
-    # [0][0] means x2 in abe-san's code, [0][1] means xpos in abe-san's code,
-    # and [0][2] means dy in abe-san's code
-    BforXplane = bz('trim', sector1_1[0][0], sector1_1[0][1], sector1_1[0][2]) + \
-        bz('no_trim', sector1_2[0][0], sector1_2[0][1], sector1_2[0][2]) + \
-        bz('no_trim', sector1_3[0][0], sector1_3[0][1], sector1_3[0][2]) + \
-        bz('trim', sector1_4[0][0], sector1_4[0][1], sector1_4[0][2])
-    BforXplane = BforXplane + \
-        bz('trim', sector2_1[0][0], sector2_1[0][1], sector2_1[0][2]) + \
-        bz('no_trim', sector2_2[0][0], sector2_2[0][1], sector2_2[0][2]) + \
-        bz('no_trim', sector2_3[0][0], sector2_3[0][1], sector2_3[0][2]) + \
-        bz('trim', sector2_4[0][0], sector2_4[0][1], sector2_4[0][2])
-    BforXplane = BforXplane + \
-        bz('trim', sector3_1[0][0], sector3_1[0][1], sector3_1[0][2]) + \
-        bz('no_trim', sector3_2[0][0], sector3_2[0][1], sector3_2[0][2]) + \
-        bz('no_trim', sector3_3[0][0], sector3_3[0][1], sector3_3[0][2]) + \
-        bz('trim', sector3_4[0][0], sector3_4[0][1], sector3_4[0][2])
-    BforXplane = BforXplane + \
-        bz('trim', sector4_1[0][0], sector4_1[0][1], sector4_1[0][2]) + \
-        bz('no_trim', sector4_2[0][0], sector4_2[0][1], sector4_2[0][2]) + \
-        bz('no_trim', sector4_3[0][0], sector4_3[0][1], sector4_3[0][2]) + \
-        bz('trim', sector4_4[0][0], sector4_4[0][1], sector4_4[0][2])
-    BforXplane = BforXplane + \
-        bz('trim', sector5_1[0][0], sector5_1[0][1], sector5_1[0][2]) + \
-        bz('no_trim', sector5_2[0][0], sector5_2[0][1], sector5_2[0][2]) + \
-        bz('no_trim', sector5_3[0][0], sector5_3[0][1], sector5_3[0][2]) + \
-        bz('trim', sector5_4[0][0], sector5_4[0][1], sector5_4[0][2])
-    BforXplane = BforXplane + \
-        bz('trim', sector6_1[0][0], sector6_1[0][1], sector6_1[0][2]) + \
-        bz('no_trim', sector6_2[0][0], sector6_2[0][1], sector6_2[0][2]) + \
-        bz('no_trim', sector6_3[0][0], sector6_3[0][1], sector6_3[0][2]) + \
-        bz('trim', sector6_4[0][0], sector6_4[0][1], sector6_4[0][2])
+    # Calculate Bz for each sector and magnet
+    for i, sector in enumerate(sectors):
+        for j, magnet in enumerate(sector):
+            trim = 'trim' if j % 4 == 0 or j % 4 == 3 else 'no_trim'
+            BforXplane += bz(trim, magnet[0][0], magnet[0][1], magnet[0][2])
 
     return BforXplane
+
 
 
 # # for plotting the map of magnetic field

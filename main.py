@@ -122,12 +122,15 @@ while stop_flag < 1:
 print('*******   Revolution time   *******')
 print(f'{t*1E9/vc.c} ns')
 
-# Output to file
-np.savetxt('main_output.dat', data_points, fmt='%.6f', header='Time(ms) X(mm) Y(mm)', comments='')
+# # Output to file
+# np.savetxt('main_output.dat', data_points, fmt='%.6f', header='Time(ms) X(mm) Y(mm)', comments='')
 
 # Plot data
 plot_data = np.array(data_points)
 plot_t, plot_x, plot_y = plot_data[:, 0], plot_data[:, 1], plot_data[:, 2]
+
+print('*******   The number of iterations   *******')
+print(f'{len(plot_t)} times')
 
 box2 = plt.figure(figsize=(17.5, 5))
 fig1 = box2.add_subplot(1, 3, 1)
@@ -140,30 +143,30 @@ fig3 = box2.add_subplot(1, 3, 3)
 plt.plot(plot_t, plot_y, linewidth=1, label='t vs y')
 plt.legend()
 
-# comparing yano-results and abe-san-results
-box3 = plt.figure(figsize=(7, 6))
-fig3_1 = box3.add_subplot(1, 1, 1)
-fig3_1 = plt.plot(plot_x, plot_y, linewidth=1, label='yano')
-plt.legend()
-# open and read abe-san-result
-openfile = open('./search_output/kidou_emi_0_dp_0.00_mx_0.dat', 'rt')
-x_list = []
-y_list = []
-for line in openfile:
-    data = line[:-1].split(' ')
-    x_list.append(float(data[1]))
-    y_list.append(float(data[2]))
-fig3_1 = plt.plot(x_list, y_list, color='RED', linewidth=1, label='abe-san')
-magnet_pos_x_flat = []
-for row in vp.magnet_pos_x:
-    magnet_pos_x_flat.extend(row)
-magnet_pos_y_flat = []
-for row in vp.magnet_pos_y:
-    magnet_pos_y_flat.extend(row)
-fig3_1 = plt.plot(magnet_pos_x_flat, magnet_pos_y_flat, 'x',
-                  color='GREEN', label='magnets')
-fig3_1 = plt.plot()
-plt.legend()
+# # comparing yano-results and abe-san-results
+# box3 = plt.figure(figsize=(7, 6))
+# fig3_1 = box3.add_subplot(1, 1, 1)
+# fig3_1 = plt.plot(plot_x, plot_y, linewidth=1, label='yano')
+# plt.legend()
+# # open and read abe-san-result
+# openfile = open('./search_output/kidou_emi_0_dp_0.00_mx_0.dat', 'rt')
+# x_list = []
+# y_list = []
+# for line in openfile:
+#     data = line[:-1].split(' ')
+#     x_list.append(float(data[1]))
+#     y_list.append(float(data[2]))
+# fig3_1 = plt.plot(x_list, y_list, color='RED', linewidth=1, label='abe-san')
+# magnet_pos_x_flat = []
+# for row in vp.magnet_pos_x:
+#     magnet_pos_x_flat.extend(row)
+# magnet_pos_y_flat = []
+# for row in vp.magnet_pos_y:
+#     magnet_pos_y_flat.extend(row)
+# fig3_1 = plt.plot(magnet_pos_x_flat, magnet_pos_y_flat, 'x',
+#                   color='GREEN', label='magnets')
+# fig3_1 = plt.plot()
+# plt.legend()
 
 # Execution time measurement is stopped
 end = time.perf_counter()
