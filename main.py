@@ -105,7 +105,7 @@ while stop_flag < 1:
     # update variables
     t += step
 
-    if (y < 0) and (x > 0):
+    if (t*1E9/vc.c > 350):
         stop_flag = 0.5
 
     vx = vx_next
@@ -115,9 +115,15 @@ while stop_flag < 1:
 
     if (stop_flag == 0.5) and (y > 0):
         stop_flag = 1
+    elif (t*1E9/vc.c > 1000):
+        stop_flag = 1
+        print('*******   Your particle goes away.   *******')
+        print('At first, check step_time in variables_conditions.py.')
+        
 
-print('*******   Revolution time   *******')
-print(f'{t*1E9/vc.c} ns')
+if t*1E9/vc.c<1000:
+    print('*******   Revolution time   *******')
+    print(f'{t*1E9/vc.c} ns')
 
 # # Output to file
 # np.savetxt('main_output.dat', data_points, fmt='%.6f', header='Time(ms) X(mm) Y(mm)', comments='')
@@ -126,8 +132,9 @@ print(f'{t*1E9/vc.c} ns')
 plot_data = np.array(data_points)
 plot_t, plot_x, plot_y = plot_data[:, 0], plot_data[:, 1], plot_data[:, 2]
 
-print('*******   The number of iterations   *******')
-print(f'{len(plot_t)} times')
+if t*1E9/vc.c<1000:
+    print('*******   The number of iterations   *******')
+    print(f'{len(plot_t)} times')
 
 box2 = plt.figure(figsize=(17.5, 5))
 fig1 = box2.add_subplot(1, 3, 1)
@@ -167,7 +174,9 @@ plt.legend()
 
 # Execution time measurement is stopped
 end = time.perf_counter()
-print('*******   Execution time is   *******')
-print((end - start))
+
+if t*1E9/vc.c<1000:
+    print('*******   Execution time is   *******')
+    print((end - start))
 
 plt.show()
