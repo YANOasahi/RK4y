@@ -37,6 +37,7 @@ stop_flag = 0
 # Print initial conditions
 print('******* Initial conditions *******')
 print(f'Proton number: {vc.z}, Mass: {vc.mass}, MoQ: {MoQ}')
+print(f'gamma: {gamma}, beta: {beta}')
 print(f'Energy: {energy * 1E6} MeV/u')
 print('******* Runge-Kutta parameters *******')
 print(f'Initial x: {x * 1000} mm, Initial y: {y * 1000} mm')

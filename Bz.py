@@ -18,6 +18,8 @@ import position
 # else if there is no trim coils, Bz : B0z * B-X curve * fringe
 # else input parameter is wrong...
 def bz(trim, x_diff, x, y):
+    # print(x,y)
+    # if (abs(x) < 0.2*1e3) and (abs(y) < 1000*1e3):
     if (abs(x) < 0.2) and (abs(y) < 1000):
         if trim == 'trim':
             Bz = vc.B0z *\
@@ -26,12 +28,13 @@ def bz(trim, x_diff, x, y):
                  vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
                  vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
                  vb.para_twz[8]*(x)**8)
-            if Bz < 0:
-                return 0
-            else:
-                Bz = Bz+FourGaussian.Btrim_Sum(x_diff)
-                Bz = Bz*Enge.enge(y)*-1
-                return Bz
+            # if Bz < 0:
+            #     print('Im here')
+            #     return 0
+            # else:
+            Bz = Bz+FourGaussian.Btrim_Sum(x_diff)
+            Bz = Bz*Enge.enge(y)*-1
+            return Bz
         elif trim == 'no_trim':
             Bz = vc.B0z *\
                 (vb.para_twz[0]+vb.para_twz[1]*(x) +
@@ -39,11 +42,11 @@ def bz(trim, x_diff, x, y):
                  vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
                  vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
                  vb.para_twz[8]*(x)**8)
-            if Bz < 0:
-                return 0
-            else:
-                Bz = Bz*Enge.enge(y)*-1
-                return Bz
+            # if Bz < 0:
+            #     return 0
+            # else:
+            Bz = Bz*Enge.enge(y)*-1
+            return Bz
         else:
             print('You put a wrong input parameter!!')
             print('Check Bz.py')
@@ -59,7 +62,7 @@ def BforXplane(x, y):
     bending_angle = np.array(vp.bend_angle)
     
     sectors = []
-    BforXplane = 0
+    BforXplane = 0.0
     
     # Convert x and y to mm from m
     x_mm, y_mm = x * 1000, y * 1000
@@ -86,8 +89,8 @@ def BforXplane(x, y):
 
 
 # # for plotting the map of magnetic field
-# x_range = np.arange(4.5, 11.5, 0.0025)  # unit is m
-# y_range = np.arange(1, 8, 0.0025)  # unit is m
+# x_range = np.arange(4.5, 11.5, 0.25)  # unit is m
+# y_range = np.arange(1, 8, 0.25)  # unit is m
 # X, Y = np.meshgrid(x_range, y_range)
 # Z = np.zeros_like(X)
 # # calculate BforXplane for each x_range and y_range

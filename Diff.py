@@ -6,6 +6,7 @@ import Bz
 
 
 def diff_vx(x, y, vy, gamma):
+    # print(f'factor of vb is {vc.z*vc.c/(vc.mass*vc.amu*gamma)}')
     return vc.z*vc.c*vy*Bz.BforXplane(x, y)/(vc.mass*vc.amu*gamma)
 
 
