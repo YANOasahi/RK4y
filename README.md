@@ -22,10 +22,6 @@ The angle of rotation is based on each geometry of the dipole.<br>
 This function is used in Diff.py.<br>
 
 <br>
-&bull;Diff.py;<br>
-For calculating the derivative of x, y, velocity in x (vx), and velocity in y (vy). <br>
-
-<br>
-&bull;main.py;<br>
-Run this code. When we need to modify parameters, open variable_conditions.py.<br>
-In particular, changing step_time in variable_conditions.py is useful for reducing execution time.
+&bull;rk45.py;<br>
+Run this code. We will use scipy.integrate.solve_ivt function in RK45 mode. Please note that we need to convert unit many times in this code.<br>
+If you want, you can confirm the results of this code and compare to ones of an explicit Runge-Kutta code, which is in dump/main.py.<br>
