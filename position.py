@@ -1,5 +1,6 @@
 # import some libraries
 import numpy as np
+from decimal import Decimal
 
 # import variables defined by myself
 import variables_position as vp

@@ -2,6 +2,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 import time
+from fractions import Fraction
 
 import Bz
 
@@ -46,18 +47,18 @@ a_bin = 2 * a_max / 15
 a_init = k * a_bin - a_max
 
 # q/m
-MoQ = mass/z
+MoQ = Fraction(mass/z)
 # momentum based on brho
-mom = c*z*brho*1E-6
+mom = Fraction(c*z*brho*1E-6)
 # beam energy based on momentum
-energy = (np.sqrt(mom**2+(mass*amu)**2)-(mass*amu))/mass
+energy = Fraction((np.sqrt(mom**2+(mass*amu)**2)-(mass*amu))/mass)
 # beta based on brho and q/m
-beta = ((c*z*brho)/(amu*mass))/np.sqrt(((c*z*brho) /
-                                        (amu*mass))*((c*z*brho)/(amu*mass))+1)
+beta = Fraction(((c*z*brho)/(amu*mass))/np.sqrt(((c*z*brho) /
+                                        (amu*mass))*((c*z*brho)/(amu*mass))+1))
 # Lorentz factor
-gamma = 1/np.sqrt(1-beta**2)
-beta = ((c * z * brho) / (amu * mass)) / \
-    np.sqrt(((c * z * brho) / (amu * mass))**2 + 1)
+gamma = Fraction(1/np.sqrt(float(1-beta**2)))
+beta = Fraction(((c * z * brho) / (amu * mass)) / \
+    np.sqrt(float(((c * z * brho) / (amu * mass))**2 + 1)))
 
 # initial velocity
 v0 = np.array([beta * np.sin(a_init / 1000),
@@ -83,15 +84,15 @@ def lorentz_force(t, y):
     v = y[3:]  # velocity
     B = magnetic_field(r)
     drdt = v
-    dvdt = (z*c / (mass*amu*gamma)) * np.cross(v, B)
+    dvdt = Fraction((z*c / (mass*amu*gamma))) * np.cross(v, B)
     return np.concatenate([drdt, dvdt])
 
 
 # time range of Runge-Kutta
 t_span = (0, stop_time/(1e9/c))  # conver time unit in ns
 
-print(f'gamma is {gamma}')
-print(f'beta is {beta}')
+print(f'gamma is {float(gamma)}')
+print(f'beta is {float(beta)}')
 
 # *******   solve motion equation using RK45   *******
 # conver time unit in ns
@@ -138,6 +139,8 @@ fig2_1 = box2.add_subplot(1, 1, 1)
 fig2_1 = plt.plot(x*1e3, y*1e3, label="X-Y plane")
 abesan=np.genfromtxt('./search_output/kidou_emi_0_dp_0.00_mx_0.dat')
 fig2_2 = plt.plot(abesan[:,1], abesan[:,2], label="Abe-san results")
+# yano=np.genfromtxt('./main_output.dat')
+# fig2_2 = plt.plot(yano[:,1], yano[:,2], label="main results")
 plt.xlabel("x (mm)")
 plt.ylabel("y (mm)")
 plt.axis('equal')

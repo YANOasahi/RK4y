@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from fractions import Fraction
 
 # import variables defined by myself
 import variables_conditions as vc
@@ -19,33 +20,25 @@ import position
 # else input parameter is wrong...
 def bz(trim, x_diff, x, y):
     # print(x,y)
-    # if (abs(x) < 0.2*1e3) and (abs(y) < 1000*1e3):
     if (abs(x) < 0.2) and (abs(y) < 1000):
         if trim == 'trim':
-            Bz = vc.B0z *\
+            Bz = Fraction(vc.B0z *\
                 (vb.para_twz[0]+vb.para_twz[1]*(x) +
                  vb.para_twz[2]*(x)**2+vb.para_twz[3]*(x)**3 +
                  vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
                  vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
-                 vb.para_twz[8]*(x)**8)
-            # if Bz < 0:
-            #     print('Im here')
-            #     return 0
-            # else:
-            Bz = Bz+FourGaussian.Btrim_Sum(x_diff)
-            Bz = Bz*Enge.enge(y)*-1
+                 vb.para_twz[8]*(x)**8))
+            Bz = Fraction(Bz+FourGaussian.Btrim_Sum(x_diff))
+            Bz = Fraction(Bz*Enge.enge(y)*-1)
             return Bz
         elif trim == 'no_trim':
-            Bz = vc.B0z *\
+            Bz = Fraction(vc.B0z *\
                 (vb.para_twz[0]+vb.para_twz[1]*(x) +
                  vb.para_twz[2]*(x)**2+vb.para_twz[3]*(x)**3 +
                  vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
                  vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
-                 vb.para_twz[8]*(x)**8)
-            # if Bz < 0:
-            #     return 0
-            # else:
-            Bz = Bz*Enge.enge(y)*-1
+                 vb.para_twz[8]*(x)**8))
+            Bz = Fraction(Bz*Enge.enge(y)*-1)
             return Bz
         else:
             print('You put a wrong input parameter!!')
