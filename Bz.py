@@ -89,8 +89,8 @@ def BforXplane(x, y):
 
 
 # # for plotting the map of magnetic field
-# x_range = np.arange(4.5, 11.5, 0.25)  # unit is m
-# y_range = np.arange(1, 8, 0.25)  # unit is m
+# x_range = np.arange(9.1, 9.3, 0.01)  # unit is m
+# y_range = np.arange(1.6, 1.8, 0.01)  # unit is m
 # X, Y = np.meshgrid(x_range, y_range)
 # Z = np.zeros_like(X)
 # # calculate BforXplane for each x_range and y_range

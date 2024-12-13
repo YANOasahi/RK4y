@@ -1,6 +1,7 @@
 # importing some libraries
 import numpy as np
 import matplotlib.pyplot as plt
+from math import fabs
 
 # import variables made bu myself
 import variables_Enge as ve
@@ -10,7 +11,7 @@ import variables_Enge as ve
 def enge(input):
     length=525
     aperture=80
-    x=(abs(input)-length)/aperture
+    x=(fabs(input)-length)/aperture
     expo = ve.enge[0]+x*ve.enge[1]+(x**2)*ve.enge[2]+ \
            (x**3)*ve.enge[3]+(x**4)*ve.enge[4]+(x**5)*ve.enge[5]
     denominator = 1+np.exp(expo)

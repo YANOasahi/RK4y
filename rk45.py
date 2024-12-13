@@ -26,7 +26,7 @@ betax = 7.817
 # the end time of Runge-Kutta
 stop_time = 380  # in ns
 # step time of Runge-Kutta
-step_time = 0.01  # in ns
+step_time = 0.1  # max. 100 ps step
 # *********************************************
 
 # *******   positions of particles   *******
@@ -127,8 +127,8 @@ print(f'vy is {vy[-1]*1000/(1e9/c)} mm/ns')  # conver unit in mm/ns
 # t vs x, and t vs y
 box1 = plt.figure(figsize=(15, 5))
 fig1_1 = box1.add_subplot(1, 1, 1)
-fig1_1 = plt.plot(t/(1e9/c), x*1e3, label='x-motion')
-fig1_1 = plt.plot(t/(1e9/c), y*1e3, label='y-motion')
+fig1_1 = plt.plot(t/(1e8/c), x*1e3, label='x-motion')
+fig1_1 = plt.plot(t/(1e8/c), y*1e3, label='y-motion')
 plt.ylabel('position [mm]')
 plt.xlabel('time [ns]')
 plt.legend()
@@ -136,6 +136,8 @@ plt.legend()
 box2 = plt.figure(figsize=(7, 6))
 fig2_1 = box2.add_subplot(1, 1, 1)
 fig2_1 = plt.plot(x*1e3, y*1e3, label="X-Y plane")
+abesan=np.genfromtxt('./search_output/kidou_emi_0_dp_0.00_mx_0.dat')
+fig2_2 = plt.plot(abesan[:,1], abesan[:,2], label="Abe-san results")
 plt.xlabel("x (mm)")
 plt.ylabel("y (mm)")
 plt.axis('equal')

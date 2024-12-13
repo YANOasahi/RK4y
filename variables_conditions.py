@@ -3,6 +3,7 @@
 # _______about magnets_______
 # current of the main magnets
 main_current = 1918.1205
+# main_current = 1918.4094  # this value is the best fit with abe-san's code
 
 # _______about particles_______
 
