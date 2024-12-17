@@ -3,6 +3,7 @@ from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 import time
 from fractions import Fraction
+from decimal import Decimal, ROUND_HALF_UP
 
 import Bz
 
@@ -25,9 +26,10 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 380  # in ns
+# stop_time = 380  # in ns
+stop_time = 380.0 # in ns
 # step time of Runge-Kutta
-step_time = 0.1  # max. 100 ps step
+step_time = 0.001  # max. 1 ps step
 # *********************************************
 
 # *******   positions of particles   *******
@@ -75,7 +77,16 @@ def magnetic_field(r):
     x, y, z = r
     b_x = 0
     b_y = 0
-    b_z = Bz.BforXplane(x, y)
+    # b_z = round(Bz.BforXplane(x, y),6)
+    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.000001'), ROUND_HALF_UP)
+    b_z = float(b_z)
+    # if y>1.6 and y<1.8:
+        # print('*****')
+        # print(y,b_z)
+        # print(b_z)
+    # print('*****')
+    # print(y)
+    # print(b_z)
     return np.array([b_x, b_y, b_z])
 
 
@@ -105,17 +116,21 @@ t = solution.t  # timing information
 x, y, z = solution.y[0], solution.y[1], solution.y[2]  # positions
 vx, vy, vz = solution.y[3], solution.y[4], solution.y[5]  # velocities
 
-# correct revolution time
-if y[-1]<0:
-    print(f'!!!!!   Break   !!!!!')
-    print(f'stop_time ({stop_time}) is too short')
-    exit()
-else:
-    print('******* Revolution time *******')
-    print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # conver time unit in ns
+# # correct revolution time
+# if y[-1]<0:
+#     print(f'!!!!!   Break   !!!!!')
+#     print(f'stop_time ({stop_time}) is too short')
+#     exit()
+# else:
+#     print('******* Revolution time *******')
+#     print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # conver time unit in ns
 
 print('*******   The number of iterations   *******')
 print(f'{len(t)} times')
+
+# print('*******   Final positions   *******')
+# print(f'x is {x*1e3} mm')  # conver unit in mm
+# print(f'y is {y*1e3} mm')  # conver unit in mm
 
 print('*******   Final velocities   *******')
 print(f'vx is {vx[-1]*1000/(1e9/c):.3f} mm/ns')  # conver unit in mm/ns
@@ -123,7 +138,7 @@ print(f'vy is {vy[-1]*1000/(1e9/c):.3f} mm/ns')  # conver unit in mm/ns
 
 # *******   output file   *******
 with open("rk45_output.dat", "w") as file:
-    for column1, column2 in zip(x*1e3, y*1e3, ):  # zip で a と b の要素をペアにする
+    for column1, column2 in zip(x*1e3, y*1e3):
         file.write(f"{column1} {column2}\n")
 
 # *******   plot   *******
