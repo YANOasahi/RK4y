@@ -19,7 +19,7 @@ amu = 931494061
 # **************   modify here   **************
 # *********************************************
 # target nuclide
-z, mass = 32.0, 77.9229  # 78Ge
+z, mass = 32.0, 77.922853  # 78Ge, mass is taken from AME2020
 # brho of particles when dp/p=0 [Tm]
 brho0 = 4.7447
 # beta of the ring in the X-axis
@@ -65,6 +65,10 @@ v0 = np.array([beta * np.sin(a_init / 1000),
                beta * np.cos(a_init / 1000),
                0])
 
+print('******* Initial conditions *******')
+print(f'gamma is {float(gamma):.3f}')
+print(f'beta is {float(beta):.3f}')
+print(f'beam energy is {float(energy*1e6):.3f} MeV/u')
 
 # *******   define magnetic field   *******
 def magnetic_field(r):
@@ -91,9 +95,6 @@ def lorentz_force(t, y):
 # time range of Runge-Kutta
 t_span = (0, stop_time/(1e9/c))  # conver time unit in ns
 
-print(f'gamma is {float(gamma)}')
-print(f'beta is {float(beta)}')
-
 # *******   solve motion equation using RK45   *******
 # conver time unit in ns
 solution = solve_ivp(lorentz_force, t_span, y0,
@@ -111,18 +112,19 @@ if y[-1]<0:
     exit()
 else:
     print('******* Revolution time *******')
-    print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c)))} ns')  # conver time unit in ns
+    print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # conver time unit in ns
 
 print('*******   The number of iterations   *******')
 print(f'{len(t)} times')
 
-print('*******   Final positions   *******')
-print(f'x is {x[-1]*1000} mm')
-print(f'y is {y[-1]*1000} mm')
-
 print('*******   Final velocities   *******')
-print(f'vx is {vx[-1]*1000/(1e9/c)} mm/ns')  # conver unit in mm/ns
-print(f'vy is {vy[-1]*1000/(1e9/c)} mm/ns')  # conver unit in mm/ns
+print(f'vx is {vx[-1]*1000/(1e9/c):.3f} mm/ns')  # conver unit in mm/ns
+print(f'vy is {vy[-1]*1000/(1e9/c):.3f} mm/ns')  # conver unit in mm/ns
+
+# *******   output file   *******
+with open("rk45_output.dat", "w") as file:
+    for column1, column2 in zip(x*1e3, y*1e3, ):  # zip で a と b の要素をペアにする
+        file.write(f"{column1} {column2}\n")
 
 # *******   plot   *******
 # t vs x, and t vs y
