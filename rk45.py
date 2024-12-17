@@ -26,8 +26,8 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-# stop_time = 380  # in ns
-stop_time = 15.0 # in ns
+stop_time = 380  # in ns
+# stop_time = 15.0 # in ns
 # step time of Runge-Kutta
 step_time = 0.01  # max. 10 ps step
 # *********************************************
@@ -79,9 +79,9 @@ def magnetic_field(r):
     b_y = 0
     b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.00000001'), ROUND_HALF_UP)
     b_z = float(b_z)
-    if y>1.6 and y<1.8:
+    # if y>1.6 and y<1.8:
         # print('*****')
-        print(y,b_z)
+        # print(y,b_z)
         # print(b_z)
     # print('*****')
     # print(y)
