@@ -23,21 +23,17 @@ def bz(trim, x_diff, x, y):
     if (abs(x) < 0.2) and (abs(y) < 1000):
         if trim == 'trim':
             Bz = Fraction(vc.B0z *\
-                (vb.para_twz[0]+vb.para_twz[1]*(x) +
-                 vb.para_twz[2]*(x)**2+vb.para_twz[3]*(x)**3 +
-                 vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
-                 vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
-                 vb.para_twz[8]*(x)**8))
+                (vb.para_twz[0] + vb.para_twz[2]*(x)**2 +
+                 vb.para_twz[4]*(x)**4 + vb.para_twz[6]*(x)**6 +
+                 vb.para_twz[8]*(x)**8))  # odd parameters are 0
             Bz = Fraction(Bz+FourGaussian.Btrim_Sum(x_diff))
             Bz = Fraction(Bz*Enge.enge(y)*-1)
             return Bz
         elif trim == 'no_trim':
             Bz = Fraction(vc.B0z *\
-                (vb.para_twz[0]+vb.para_twz[1]*(x) +
-                 vb.para_twz[2]*(x)**2+vb.para_twz[3]*(x)**3 +
-                 vb.para_twz[4]*(x)**4+vb.para_twz[5]*(x)**5 +
-                 vb.para_twz[6]*(x)**6+vb.para_twz[7]*(x)**7 +
-                 vb.para_twz[8]*(x)**8))
+                (vb.para_twz[0] + vb.para_twz[2]*(x)**2 +
+                 vb.para_twz[4]*(x)**4 + vb.para_twz[6]*(x)**6 +
+                 vb.para_twz[8]*(x)**8))  # odd parameters are 0
             Bz = Fraction(Bz*Enge.enge(y)*-1)
             return Bz
         else:
