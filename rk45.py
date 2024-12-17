@@ -27,9 +27,9 @@ brho0 = 4.7447
 betax = 7.817
 # the end time of Runge-Kutta
 # stop_time = 380  # in ns
-stop_time = 380.0 # in ns
+stop_time = 15.0 # in ns
 # step time of Runge-Kutta
-step_time = 0.001  # max. 1 ps step
+step_time = 0.01  # max. 10 ps step
 # *********************************************
 
 # *******   positions of particles   *******
@@ -77,12 +77,11 @@ def magnetic_field(r):
     x, y, z = r
     b_x = 0
     b_y = 0
-    # b_z = round(Bz.BforXplane(x, y),6)
-    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.000001'), ROUND_HALF_UP)
+    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.00000001'), ROUND_HALF_UP)
     b_z = float(b_z)
-    # if y>1.6 and y<1.8:
+    if y>1.6 and y<1.8:
         # print('*****')
-        # print(y,b_z)
+        print(y,b_z)
         # print(b_z)
     # print('*****')
     # print(y)
@@ -154,7 +153,7 @@ plt.legend()
 box2 = plt.figure(figsize=(7, 6))
 fig2_1 = box2.add_subplot(1, 1, 1)
 fig2_1 = plt.plot(x*1e3, y*1e3, label="X-Y plane")
-abesan=np.genfromtxt('./search_output/kidou_emi_0_dp_0.00_mx_0.dat')
+abesan=np.genfromtxt('./kidou_long.dat')
 fig2_2 = plt.plot(abesan[:,1], abesan[:,2], label="Abe-san results")
 # yano=np.genfromtxt('./main_output.dat')
 # fig2_2 = plt.plot(yano[:,1], yano[:,2], label="main results")
