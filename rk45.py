@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import time
 from fractions import Fraction
 from decimal import Decimal, ROUND_HALF_UP
+from scipy.constants import c
+from scipy.constants import physical_constants
 
 import Bz
 
@@ -11,10 +13,9 @@ import Bz
 start = time.perf_counter()
 
 # *******   physics constant   *******
-# light speed [m/s]
-c = 299792458
+# light speed [m/s] is defined by scipy.constants
 # amu [ev/c^2]
-amu = 931494061
+amu = physical_constants['atomic mass unit-electron volt relationship'][0]
 
 # *********************************************
 # **************   modify here   **************
@@ -29,7 +30,7 @@ betax = 7.817
 stop_time = 380  # in ns
 # stop_time = 15.0 # in ns
 # step time of Runge-Kutta
-step_time = 0.01  # max. 10 ps step
+step_time = 0.1  # max. 100 ps step
 # *********************************************
 
 # *******   positions of particles   *******
