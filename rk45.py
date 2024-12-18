@@ -27,17 +27,15 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 380  # in ns
-# stop_time = 15.0 # in ns
+stop_time = 15.0  # in ns
 # step time of Runge-Kutta
-step_time = 0.1  # max. 100 ps step
+step_time = 0.01  # max. 10 ps step
 # *********************************************
 
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-# initial position
-r0 = np.array([x0/1000, y0/1000, 0])
+r0 = np.array([x0/1000, y0/1000, 0])  # initial position
 
 # *******   velocities of particles   *******
 # for searching an ideal condition
@@ -60,8 +58,6 @@ beta = Fraction(((c*z*brho)/(amu*mass))/np.sqrt(((c*z*brho) /
                                         (amu*mass))*((c*z*brho)/(amu*mass))+1))
 # Lorentz factor
 gamma = Fraction(1/np.sqrt(float(1-beta**2)))
-beta = Fraction(((c * z * brho) / (amu * mass)) / \
-    np.sqrt(float(((c * z * brho) / (amu * mass))**2 + 1)))
 
 # initial velocity
 v0 = np.array([beta * np.sin(a_init / 1000),
@@ -78,15 +74,11 @@ def magnetic_field(r):
     x, y, z = r
     b_x = 0
     b_y = 0
-    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.00000001'), ROUND_HALF_UP)
+    # to guarantee the precision of b_z, digit should be defined
+    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.000001'), ROUND_HALF_UP)
     b_z = float(b_z)
-    # if y>1.6 and y<1.8:
-        # print('*****')
-        # print(y,b_z)
-        # print(b_z)
-    # print('*****')
-    # print(y)
-    # print(b_z)
+    if y>1.6 and y<1.8:
+        print(y,b_z)
     return np.array([b_x, b_y, b_z])
 
 
@@ -98,7 +90,9 @@ def lorentz_force(t, y):
     r = y[:3]  # position
     v = y[3:]  # velocity
     B = magnetic_field(r)
+    # differential of position
     drdt = v
+    # differential of velocity
     dvdt = Fraction((z*c / (mass*amu*gamma))) * np.cross(v, B)
     return np.concatenate([drdt, dvdt])
 
@@ -107,7 +101,6 @@ def lorentz_force(t, y):
 t_span = (0, stop_time/(1e9/c))  # conver time unit in ns
 
 # *******   solve motion equation using RK45   *******
-# conver time unit in ns
 solution = solve_ivp(lorentz_force, t_span, y0,
                      method='RK45', max_step=step_time/(1e9/c))
 
@@ -123,18 +116,18 @@ vx, vy, vz = solution.y[3], solution.y[4], solution.y[5]  # velocities
 #     exit()
 # else:
 #     print('******* Revolution time *******')
-#     print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # conver time unit in ns
+#     print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # convert time unit in ns
 
 print('*******   The number of iterations   *******')
 print(f'{len(t)} times')
 
 # print('*******   Final positions   *******')
-# print(f'x is {x*1e3} mm')  # conver unit in mm
-# print(f'y is {y*1e3} mm')  # conver unit in mm
+# print(f'x is {x*1e3} mm')  # convert unit in mm
+# print(f'y is {y*1e3} mm')  # convert unit in mm
 
 print('*******   Final velocities   *******')
-print(f'vx is {vx[-1]*1000/(1e9/c):.3f} mm/ns')  # conver unit in mm/ns
-print(f'vy is {vy[-1]*1000/(1e9/c):.3f} mm/ns')  # conver unit in mm/ns
+print(f'vx is {vx[-1]*1000/(1e9/c):.3f} mm/ns')  # convert unit in mm/ns
+print(f'vy is {vy[-1]*1000/(1e9/c):.3f} mm/ns')  # convert unit in mm/ns
 
 # *******   output file   *******
 with open("rk45_output.dat", "w") as file:
@@ -156,8 +149,6 @@ fig2_1 = box2.add_subplot(1, 1, 1)
 fig2_1 = plt.plot(x*1e3, y*1e3, label="X-Y plane")
 abesan=np.genfromtxt('./kidou_long.dat')
 fig2_2 = plt.plot(abesan[:,1], abesan[:,2], label="Abe-san results")
-# yano=np.genfromtxt('./main_output.dat')
-# fig2_2 = plt.plot(yano[:,1], yano[:,2], label="main results")
 plt.xlabel("x (mm)")
 plt.ylabel("y (mm)")
 plt.axis('equal')
