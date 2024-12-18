@@ -31,9 +31,6 @@ for i in range(6):
     rad3[i] = (37.5+i*60)
     rad4[i] = (52.5+i*60)
 
-
-bend_angle = []
-
 bend_angle = ((rad1[0], rad2[0], rad3[0], rad4[0]),
               (rad1[1], rad2[1], rad3[1], rad4[1]),
               (rad1[2], rad2[2], rad3[2], rad4[2]),
