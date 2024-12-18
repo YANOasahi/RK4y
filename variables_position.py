@@ -4,10 +4,6 @@ import numpy as np
 # 4 magnets x 6 sectors
 
 # magnet_pos_x is the center of magnet's coordinate in the X-axis
-magnet_pos_x = []
-# magnet_pos_y is the center of magnet's coordinate in the Y-axis
-magnet_pos_y = []
-
 magnet_pos_x = ((9232.420563, 8805.253915, 7980.153668, 6812.990034),
                 (2419.652338, 823.734813, -824.801225, -2419.208113),
                 (-6812.546113, -7979.587097, -8804.80969, -9231.976338),
@@ -15,6 +11,7 @@ magnet_pos_x = ((9232.420563, 8805.253915, 7980.153668, 6812.990034),
                 (-2419.208113, -825.000481, 825.444706, 2419.652338),
                 (6812.990338, 7980.031322, 8805.253915, 9232.420563))
 
+# magnet_pos_y is the center of magnet's coordinate in the Y-axis
 magnet_pos_y = ((2536.110167, 4130.317798, 5559.485814, 6726.686242),
                 (9263.181119, 9677.359839, 9690.373999, 9263.181119),
                 (6726.686242, 5559.645258, 4130.317798, 2536.10167),
