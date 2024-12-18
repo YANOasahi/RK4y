@@ -17,21 +17,20 @@ import position
 # else if there is no trim coils, Bz : B0z * B-X curve * fringe
 # else input parameter is wrong...
 def bz(trim, x_diff, x, y):
-    # print(x,y)
     if (abs(x) < 0.2) and (abs(y) < 1000):
         if trim == 'trim':
             Bz = Fraction(var.B0z *\
-                (var.para_twz[0] + var.para_twz[2]*(x)**2 +
-                 var.para_twz[4]*(x)**4 + var.para_twz[6]*(x)**6 +
-                 var.para_twz[8]*(x)**8))  # odd parameters are 0
+                (var.para_twz[0] + var.para_twz[2]*np.square(x) +
+                 var.para_twz[4]*np.power(x,4) + var.para_twz[6]*np.power(x,6) +
+                 var.para_twz[8]*np.power(x,8)))  # odd parameters are 0
             Bz = Fraction(Bz+FourGaussian.Btrim_Sum(x_diff))
             Bz = Fraction(Bz*Enge.enge(y)*-1)
             return Bz
         elif trim == 'no_trim':
             Bz = Fraction(var.B0z *\
-                (var.para_twz[0] + var.para_twz[2]*(x)**2 +
-                 var.para_twz[4]*(x)**4 + var.para_twz[6]*(x)**6 +
-                 var.para_twz[8]*(x)**8))  # odd parameters are 0
+                (var.para_twz[0] + var.para_twz[2]*np.square(x) +
+                 var.para_twz[4]*np.power(x,4) + var.para_twz[6]*np.power(x,6) +
+                 var.para_twz[8]*np.power(x,8)))  # odd parameters are 0
             Bz = Fraction(Bz*Enge.enge(y)*-1)
             return Bz
         else:
@@ -52,7 +51,7 @@ def BforXplane(x, y):
     BforXplane = 0.0
     
     # Convert x and y to mm from m
-    x_mm, y_mm = x * 1000, y * 1000
+    x_mm, y_mm = x * 1000.0, y * 1000.0
 
     # Calculate positions for each magnet sector
     for i in range(magnet_x.shape[0]):  # Loop over sectors
