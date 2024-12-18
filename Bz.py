@@ -5,9 +5,10 @@ from mpl_toolkits.mplot3d import Axes3D
 from fractions import Fraction
 
 # import variables defined by myself
-import variables_conditions as vc
-import variables_Bz as vb
-import variables_position as vp
+# import variables_conditions as vc
+# import variables_Bz as vb
+# import variables_position as vp
+import variables as var
 
 # import functions made by myself
 import FourGaussian
@@ -22,18 +23,18 @@ def bz(trim, x_diff, x, y):
     # print(x,y)
     if (abs(x) < 0.2) and (abs(y) < 1000):
         if trim == 'trim':
-            Bz = Fraction(vc.B0z *\
-                (vb.para_twz[0] + vb.para_twz[2]*(x)**2 +
-                 vb.para_twz[4]*(x)**4 + vb.para_twz[6]*(x)**6 +
-                 vb.para_twz[8]*(x)**8))  # odd parameters are 0
+            Bz = Fraction(var.B0z *\
+                (var.para_twz[0] + var.para_twz[2]*(x)**2 +
+                 var.para_twz[4]*(x)**4 + var.para_twz[6]*(x)**6 +
+                 var.para_twz[8]*(x)**8))  # odd parameters are 0
             Bz = Fraction(Bz+FourGaussian.Btrim_Sum(x_diff))
             Bz = Fraction(Bz*Enge.enge(y)*-1)
             return Bz
         elif trim == 'no_trim':
-            Bz = Fraction(vc.B0z *\
-                (vb.para_twz[0] + vb.para_twz[2]*(x)**2 +
-                 vb.para_twz[4]*(x)**4 + vb.para_twz[6]*(x)**6 +
-                 vb.para_twz[8]*(x)**8))  # odd parameters are 0
+            Bz = Fraction(var.B0z *\
+                (var.para_twz[0] + var.para_twz[2]*(x)**2 +
+                 var.para_twz[4]*(x)**4 + var.para_twz[6]*(x)**6 +
+                 var.para_twz[8]*(x)**8))  # odd parameters are 0
             Bz = Fraction(Bz*Enge.enge(y)*-1)
             return Bz
         else:
@@ -46,9 +47,9 @@ def bz(trim, x_diff, x, y):
 
 def BforXplane(x, y):
     # Prepare required variables
-    magnet_x = np.array(vp.magnet_pos_x)
-    magnet_y = np.array(vp.magnet_pos_y)
-    bending_angle = np.array(vp.bend_angle)
+    magnet_x = np.array(var.magnet_pos_x)
+    magnet_y = np.array(var.magnet_pos_y)
+    bending_angle = np.array(var.bend_angle)
     
     sectors = []
     BforXplane = 0.0
