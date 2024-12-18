@@ -74,10 +74,8 @@ def magnetic_field(r):
     x, y, z = r
     b_x = 0.0
     b_y = 0.0
-    # to guarantee the precision of b_z, digit should be defined
-    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.00000000000001'), ROUND_HALF_UP)
-    b_z = float(b_z)
-    # if y>2.0 and y<2.2:
+    b_z = Bz.BforXplane(x, y)
+    # if y>1.6 and y<2.2:
     #     print(y,b_z)
     return np.array([b_x, b_y, b_z])
 
@@ -147,8 +145,8 @@ plt.legend()
 box2 = plt.figure(figsize=(7, 6))
 fig2_1 = box2.add_subplot(1, 1, 1)
 fig2_1 = plt.plot(x*1e3, y*1e3, label="X-Y plane")
-abesan=np.genfromtxt('./kidou_long.dat')
-fig2_2 = plt.plot(abesan[:,1], abesan[:,2], label="Abe-san results")
+# abesan=np.genfromtxt('./kidou_long.dat')
+# fig2_2 = plt.plot(abesan[:,1], abesan[:,2], label="Abe-san results")
 plt.xlabel("x (mm)")
 plt.ylabel("y (mm)")
 plt.axis('equal')

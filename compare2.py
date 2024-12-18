@@ -10,7 +10,7 @@ fig1_1 = box1.add_subplot(1, 1, 1)
 # fig1_1 = plt.plot(data1[:,0], data1[:,1], label="Yano 1e-6")
 
 data2=np.genfromtxt('./bzz_yano2.dat')
-fig1_1 = plt.plot(data2[:,0]*1000, data2[:,1], label="Yano 1e-10")
+fig1_1 = plt.plot(data2[:,0]*1000, data2[:,1], label="Yano")
 
 # remove dupulication
 input_file = "bzz_abesan.dat"  # origin
@@ -23,7 +23,7 @@ with open(output_file, "w") as outfile:
     outfile.write("\n".join(unique_lines) + "\n")
 
 data3=np.genfromtxt('./bzz_abesan2.dat')
-fig1_1 = plt.plot(data3[:,0], data3[:,1], label="Abe-san 1e-10")
+fig1_1 = plt.plot(data3[:,0], data3[:,1], label="Abe-san")
 
 plt.legend()
 plt.show()
