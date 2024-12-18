@@ -27,9 +27,9 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 15.0  # in ns
+stop_time = 380.0  # in ns
 # step time of Runge-Kutta
-step_time = 0.01  # max. 10 ps step
+step_time = 0.1  # max. 100 ps step
 # *********************************************
 
 # *******   positions of particles   *******
@@ -75,10 +75,10 @@ def magnetic_field(r):
     b_x = 0
     b_y = 0
     # to guarantee the precision of b_z, digit should be defined
-    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.000001'), ROUND_HALF_UP)
+    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.0000000001'), ROUND_HALF_UP)
     b_z = float(b_z)
-    if y>1.6 and y<1.8:
-        print(y,b_z)
+    # if y>1.6 and y<1.8:
+    #     print(y,b_z)
     return np.array([b_x, b_y, b_z])
 
 
@@ -109,14 +109,14 @@ t = solution.t  # timing information
 x, y, z = solution.y[0], solution.y[1], solution.y[2]  # positions
 vx, vy, vz = solution.y[3], solution.y[4], solution.y[5]  # velocities
 
-# # correct revolution time
-# if y[-1]<0:
-#     print(f'!!!!!   Break   !!!!!')
-#     print(f'stop_time ({stop_time}) is too short')
-#     exit()
-# else:
-#     print('******* Revolution time *******')
-#     print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # convert time unit in ns
+# correct revolution time
+if y[-1]<0:
+    print(f'!!!!!   Break   !!!!!')
+    print(f'stop_time ({stop_time}) is too short')
+    exit()
+else:
+    print('******* Revolution time *******')
+    print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # convert time unit in ns
 
 print('*******   The number of iterations   *******')
 print(f'{len(t)} times')
