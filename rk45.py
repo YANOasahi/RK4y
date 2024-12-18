@@ -29,22 +29,22 @@ betax = 7.817
 # the end time of Runge-Kutta
 stop_time = 380.0  # in ns
 # step time of Runge-Kutta
-step_time = 0.1  # max. 100 ps step
+step_time = 0.05  # max. 50 ps step
 # *********************************************
 
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-r0 = np.array([x0/1000, y0/1000, 0])  # initial position
+r0 = np.array([x0/1000.0, y0/1000.0, 0.0])  # initial position
 
 # *******   velocities of particles   *******
 # for searching an ideal condition
 j, l, k = 0.0, 0.0, 0.0
 dp = 0.1 * j
-brho = brho0 * (1 + dp / 100)
-emi = l * 20
+brho = brho0 * (1 + dp / 100.0)
+emi = l * 20.0
 a_max = np.sqrt(emi / betax) * 0.95
-a_bin = 2 * a_max / 15
+a_bin = 2.0 * a_max / 15.0
 a_init = k * a_bin - a_max
 
 # q/m
@@ -52,32 +52,32 @@ MoQ = Fraction(mass/z)
 # momentum based on brho
 mom = Fraction(c*z*brho*1E-6)
 # beam energy based on momentum
-energy = Fraction((np.sqrt(mom**2+(mass*amu)**2)-(mass*amu))/mass)
+energy = Fraction((np.sqrt(np.square(mom)+np.square((mass*amu)))-(mass*amu))/mass)
 # beta based on brho and q/m
 beta = Fraction(((c*z*brho)/(amu*mass))/np.sqrt(((c*z*brho) /
-                                        (amu*mass))*((c*z*brho)/(amu*mass))+1))
+                                        (amu*mass))*((c*z*brho)/(amu*mass))+1.0))
 # Lorentz factor
-gamma = Fraction(1/np.sqrt(float(1-beta**2)))
+gamma = Fraction(1/np.sqrt(float(1-np.square(beta))))
 
 # initial velocity
-v0 = np.array([beta * np.sin(a_init / 1000),
-               beta * np.cos(a_init / 1000),
-               0])
+v0 = np.array([beta * np.sin(a_init / 1000.0),
+               beta * np.cos(a_init / 1000.0),
+               0.0])
 
 print('******* Initial conditions *******')
-print(f'gamma is {float(gamma):.3f}')
-print(f'beta is {float(beta):.3f}')
+print(f'gamma is {float(gamma):.5f}')
+print(f'beta is {float(beta):.5f}')
 print(f'beam energy is {float(energy*1e6):.3f} MeV/u')
 
 # *******   define magnetic field   *******
 def magnetic_field(r):
     x, y, z = r
-    b_x = 0
-    b_y = 0
+    b_x = 0.0
+    b_y = 0.0
     # to guarantee the precision of b_z, digit should be defined
-    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.0000000001'), ROUND_HALF_UP)
+    b_z = Decimal(Bz.BforXplane(x, y)).quantize(Decimal('0.00000000000001'), ROUND_HALF_UP)
     b_z = float(b_z)
-    # if y>1.6 and y<1.8:
+    # if y>2.0 and y<2.2:
     #     print(y,b_z)
     return np.array([b_x, b_y, b_z])
 

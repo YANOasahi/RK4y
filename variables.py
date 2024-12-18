@@ -10,8 +10,6 @@ main_current = 1918.1205
 trim_current = (592.128, 1.958, 91.045, 226.784,
                 158.111, 146.1, 117.213, 280.012, 47.809, 279.008)
 
-print(f'trim_current[0] is {trim_current[0]:.10f}')
-
 # calculation is normalized by this current
 main_base = 1915.0
 
@@ -21,10 +19,9 @@ B0z = 1.182166
 # parameters for main magnetic field
 para_twz = (1*(main_current/main_base), 0.0, 0.0639773,
             0.0, -54.1635, 0.0, 12402.1, 0.0, -651257)
-print(f'para_twz[0] is {para_twz[0]:.10f}')
 
 # parameters for fringe field
-enge=(0.288396,1.41928,-0.319549,0.226168,-0.026047,0.002317)
+enge = (0.288396, 1.41928, -0.319549, 0.226168, -0.026047, 0.002317)
 
 # parameters for trim coils
 amp = np.array([[-0.00559819, -0.0000670702, -0.000657458, -0.00426336],
