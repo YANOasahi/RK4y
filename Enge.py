@@ -5,7 +5,6 @@ from math import fabs
 from fractions import Fraction
 
 # import variables made bu myself
-# import variables_Enge as ve
 import variables as var
 
 

@@ -5,9 +5,6 @@ from mpl_toolkits.mplot3d import Axes3D
 from fractions import Fraction
 
 # import variables defined by myself
-# import variables_conditions as vc
-# import variables_Bz as vb
-# import variables_position as vp
 import variables as var
 
 # import functions made by myself

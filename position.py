@@ -1,6 +1,5 @@
 # import some libraries
 import numpy as np
-from decimal import Decimal
 
 def Position(x, y, magnet_x, magnet_y, bending_angle):
     # x_diff is the difference between input-x and the magnet's central x
