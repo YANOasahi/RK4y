@@ -48,7 +48,7 @@ def BforXplane(x, y):
     bending_angle = np.array(var.bend_angle)
     
     sectors = []
-    BforXplane = 0.0
+    bz_sum = 0.0
     
     # Convert x and y to mm from m
     x_mm, y_mm = x * 1000.0, y * 1000.0
@@ -68,11 +68,12 @@ def BforXplane(x, y):
     for i, sector in enumerate(sectors):
         for j, magnet in enumerate(sector):
             trim = 'trim' if j % 4 == 0 or j % 4 == 3 else 'no_trim'
-            BforXplane += bz(trim, magnet[0][0], magnet[0][1], magnet[0][2])
+            bz_sum += bz(trim, magnet[0][0], magnet[0][1], magnet[0][2])
 
-    return BforXplane
+    return bz_sum
 
-
+# print(BforXplane(9.282862321,2.201296316))
+# print(BforXplane(0,0))
 
 # # for plotting the map of magnetic field
 # x_range = np.arange(9.1, 9.3, 0.01)  # unit is m

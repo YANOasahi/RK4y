@@ -27,8 +27,8 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 378.937  # in ns
-# stop_time = 15.0  # in ns
+# stop_time = 378.937  # in ns
+stop_time = 15.0  # in ns
 # step time of Runge-Kutta
 step_time = 0.05  # max. 50 ps step
 # *********************************************
@@ -76,7 +76,8 @@ def magnetic_field(r):
     b_x = 0.0
     b_y = 0.0
     b_z = Bz.BforXplane(x, y)
-    if y>1.6 and y<2.2:
+    # if y>1.6 and y<2.2:
+    if y>1.4 and y<1.6:
         print(y,b_z)
     return np.array([b_x, b_y, b_z])
 
