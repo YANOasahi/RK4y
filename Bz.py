@@ -18,8 +18,8 @@ import position
 # else if there is no trim coils, Bz : B0z * B-X curve * fringe
 # else input parameter is wrong...
 def bz(trim, x_diff, x, y):
-    if (abs(x)-0.2 < 1e-10) and (abs(y)-1000 < 1e-10):
-    # if (abs(x) < 0.2) and (abs(y) < 1000):
+    # if (abs(x)-0.2 < 1e-13) and (abs(y)-1000 < 1e-13):
+    if (abs(x) < 0.2) and (abs(y) < 1000):
         if trim == 'trim':
             Bz = Fraction(var.B0z *\
                 (var.para_twz[0] + var.para_twz[2]*np.square(x) +
@@ -27,7 +27,8 @@ def bz(trim, x_diff, x, y):
                  var.para_twz[8]*np.power(x,8)))  # odd parameters are 0
             Bz = Fraction(Bz+FourGaussian.Btrim_Sum(x_diff))
             Bz = float(Fraction(Bz*Enge.enge(y)*-1))
-            # Bz = Decimal(Bz).quantize(Decimal('1e-10'), ROUND_HALF_UP)  # for calculation accuracy
+            Bz = Decimal(Bz).quantize(Decimal('1e-11'), ROUND_HALF_UP)  # for calculation accuracy
+            # print(float(Bz))
             return float(Bz)
         elif trim == 'no_trim':
             Bz = Fraction(var.B0z *\
@@ -35,13 +36,15 @@ def bz(trim, x_diff, x, y):
                  var.para_twz[4]*np.power(x,4) + var.para_twz[6]*np.power(x,6) +
                  var.para_twz[8]*np.power(x,8)))  # odd parameters are 0
             Bz = float(Fraction(Bz*Enge.enge(y)*-1))
-            # Bz = Decimal(Bz).quantize(Decimal('1e-10'), ROUND_HALF_UP)  # for calculation accuracy
+            Bz = Decimal(Bz).quantize(Decimal('1e-11'), ROUND_HALF_UP)  # for calculation accuracy
+            # print(float(Bz))
             return float(Bz)
         else:
             print('You put a wrong input parameter!!')
             print('Check Bz.py')
             return 0.0
     else:
+        # print('out of range')
         return 0.0
 
 
@@ -73,8 +76,10 @@ def BforXplane(x, y):
         for j, magnet in enumerate(sector):
             trim = 'trim' if j % 4 == 0 or j % 4 == 3 else 'no_trim'
             bz_sum += bz(trim, magnet[0][0], magnet[0][1], magnet[0][2])
+            # print(f'bz_sum is {bz_sum}')
     return bz_sum
 
+# BforXplane(9.287959673000,1.592947412600)
 
 # # for plotting the map of magnetic field
 # x_range = np.arange(9.1, 9.3, 0.01)  # unit is m

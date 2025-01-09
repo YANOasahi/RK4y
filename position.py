@@ -15,8 +15,8 @@ def Position(x, y, magnet_x, magnet_y, bending_angle):
     y_particle = Decimal(x_diff) * Decimal(np.sin(-np.deg2rad(bending_angle))) + \
                  Decimal(y_diff) * Decimal(np.cos(-np.deg2rad(bending_angle)))
                  
-    # x_particle = Decimal(x_particle).quantize(Decimal('1e-10'), ROUND_HALF_UP)  # for calculation accuracy
-    # y_particle = Decimal(y_particle).quantize(Decimal('1e-10'), ROUND_HALF_UP)  # for calculation accuracy
+    x_particle = Decimal(x_particle).quantize(Decimal('1e-11'), ROUND_HALF_UP)  # for calculation accuracy
+    y_particle = Decimal(y_particle).quantize(Decimal('1e-11'), ROUND_HALF_UP)  # for calculation accuracy
 
     coordinate = np.column_stack((float(x_particle), float(x_particle)/1000, float(y_particle)))  # representing x2, xpos, dy
     
