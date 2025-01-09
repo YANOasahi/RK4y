@@ -27,10 +27,11 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-# stop_time = 378.937  # in ns
-stop_time = 15.0  # in ns
+stop_time = 378.937  # in ns
+# stop_time = 15.0  # in ns
 # step time of Runge-Kutta
-step_time = 0.05  # max. 50 ps step
+# step_time = 0.05  # max. 50 ps step
+step_time = 0.0001  # max. 100 fs step
 # *********************************************
 
 # *******   positions of particles   *******
@@ -76,9 +77,9 @@ def magnetic_field(r):
     b_x = 0.0
     b_y = 0.0
     b_z = Bz.BforXplane(x, y)
-    if y>1.6 and y<2.2:
+    # if y>1.59 and y<2.2:
     # if y>1.4 and y<1.6:
-        print(y,b_z)
+        # print(y,b_z)
     return np.array([b_x, b_y, b_z])
 
 
@@ -121,9 +122,9 @@ else:
 print('*******   The number of iterations   *******')
 print(f'{len(t)} times')
 
-# print('*******   Final positions   *******')
-# print(f'x is {x*1e3} mm')  # convert unit in mm
-# print(f'y is {y*1e3} mm')  # convert unit in mm
+print('*******   Final positions   *******')
+print(f'x is {x[-1]*1e3} mm')  # convert unit in mm
+print(f'y is {y[-1]*1e3} mm')  # convert unit in mm
 
 print('*******   Final velocities   *******')
 print(f'vx is {vx[-1]*1000/(1e9/c):.3f} mm/ns')  # convert unit in mm/ns
@@ -144,7 +145,7 @@ plt.ylabel('position [mm]')
 plt.xlabel('time [ns]')
 plt.legend()
 # x vs y
-box2 = plt.figure(figsize=(7, 6))
+box2 = plt.figure(figsize=(7.1, 5.6))
 fig2_1 = box2.add_subplot(1, 1, 1)
 fig2_1 = plt.plot(x*1e3, y*1e3, label="X-Y plane")
 abesan=np.genfromtxt('./kidou_long.dat')

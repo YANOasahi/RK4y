@@ -1,18 +1,24 @@
 # import some libraries
 import numpy as np
+from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 
 def Position(x, y, magnet_x, magnet_y, bending_angle):
     # x_diff is the difference between input-x and the magnet's central x
-    x_diff = x-magnet_x
+    x_diff = Decimal(x-magnet_x)
     # y_diff is the difference between input-y and the magnet's central y
-    y_diff = y-magnet_y
+    y_diff = Decimal(y-magnet_y)
     # rotate coordinate around the Z-axis
-    x_particle = (x_diff*np.cos(-np.deg2rad(bending_angle)) -
-                  y_diff*np.sin(-np.deg2rad(bending_angle)))
-    y_particle = (x_diff*np.sin(-np.deg2rad(bending_angle)) +
-                  y_diff*np.cos(-np.deg2rad(bending_angle)))
+    x_particle = Decimal(x_diff) * Decimal(np.cos(-np.deg2rad(bending_angle))) - \
+                 Decimal(y_diff) * Decimal(np.sin(-np.deg2rad(bending_angle)))
+    
+    y_particle = Decimal(x_diff) * Decimal(np.sin(-np.deg2rad(bending_angle))) + \
+                 Decimal(y_diff) * Decimal(np.cos(-np.deg2rad(bending_angle)))
+                 
+    # x_particle = Decimal(x_particle).quantize(Decimal('1e-10'), ROUND_HALF_UP)  # for calculation accuracy
+    # y_particle = Decimal(y_particle).quantize(Decimal('1e-10'), ROUND_HALF_UP)  # for calculation accuracy
 
-    coordinate = np.column_stack((x_particle, x_particle/1000, y_particle))  # representing x2, xpos, dy
+    coordinate = np.column_stack((float(x_particle), float(x_particle)/1000, float(y_particle)))  # representing x2, xpos, dy
     
     # print(f'{x_diff*np.cos(-np.deg2rad(bending_angle))}')
     # print(f'{y_diff*np.sin(-np.deg2rad(bending_angle))}')
