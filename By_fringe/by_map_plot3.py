@@ -26,8 +26,8 @@ def gaussian(x, A, mu, sigma):
 
 # for Z vs By
 # z looks like a factor
-def factor(x,a):
-    return a*x
+def factor(z,a):
+    return a*z
 
 p0 = [0.0006958040766977115, 6.292789011773518, 0.09067786199274608,  # log normal
       -8.169333763413994e-07, 560.6826636407911, 27.58503262197233,   # gaussian
@@ -35,7 +35,8 @@ p0 = [0.0006958040766977115, 6.292789011773518, 0.09067786199274608,  # log norm
       1.9893328877436285e-07, 703.2723248019659, 59.25730588891589,   # gaussian
       1.2306205278883204e-07, 1061.4207387188872, 405.3453929882518,  # gaussian
       1.08879695e-14, 1.92593466e-14, 4.73198961e-10, -4.69999453e-10, 3.80312597e-06, 5.43736144e-07,  # fifth_y
-      29891.69217]
+      29891.69217,  # z-factor
+      -0.000002]  # offset
 
 A_log, mu_log, sigma_log, \
 A1, mu1, sigma1, \
@@ -43,7 +44,8 @@ A2, mu2, sigma2, \
 A3, mu3, sigma3, \
 A4, mu4, sigma4, \
 a_y, b_y, c_y, d_y, e_y, f_y, \
-a_z = p0
+a_z, \
+offset = p0
 
 # define fitting function
 def combined_model(plots):
@@ -55,7 +57,7 @@ def combined_model(plots):
     gauss4 = gaussian(x, A4, mu4, sigma4)
     fifth_y = fifth(y, a_y, b_y, c_y, d_y, e_y, f_y)
     factor_z=factor(z, a_z)
-    return factor_z * ((lognorm+gauss1+gauss2+gauss3+gauss4) * fifth_y)
+    return factor_z * ((lognorm+gauss1+gauss2+gauss3+gauss4+offset) * fifth_y)
 
 fig2D_1 = plt.figure()
 y_by = fig2D_1.add_subplot()

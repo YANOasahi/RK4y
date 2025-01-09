@@ -63,16 +63,15 @@ def BforXplane(x, y):
                 )
             )
         sectors.append(sector)
-
+        
     # Calculate Bz for each sector and magnet
     for i, sector in enumerate(sectors):
         for j, magnet in enumerate(sector):
             trim = 'trim' if j % 4 == 0 or j % 4 == 3 else 'no_trim'
             bz_sum += bz(trim, magnet[0][0], magnet[0][1], magnet[0][2])
-
     return bz_sum
 
-# print(BforXplane(9.282862321,2.201296316))
+# print(BforXplane(9.282935776,2.199705287))
 # print(BforXplane(0,0))
 
 # # for plotting the map of magnetic field

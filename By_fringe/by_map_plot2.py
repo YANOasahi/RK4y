@@ -38,7 +38,8 @@ def combined_model(plots,
                    A3, mu3, sigma3,
                    A4, mu4, sigma4,
                    a_y, b_y, c_y, d_y, e_y, f_y,
-                   a_z):
+                   a_z,
+                   offset):
     x, y, z = plots
     lognorm = lognormal(x, A_log, mu_log, sigma_log)
     gauss1 = gaussian(x, A1, mu1, sigma1)
@@ -47,7 +48,7 @@ def combined_model(plots,
     gauss4 = gaussian(x, A4, mu4, sigma4)
     fifth_y = fifth(y, a_y, b_y, c_y, d_y, e_y, f_y)
     factor_z = factor(z,a_z)
-    return factor_z * ((lognorm+gauss1+gauss2+gauss3+gauss4) * fifth_y)
+    return factor_z * ((lognorm+gauss1+gauss2+gauss3+gauss4+offset) * fifth_y)
 
 # initial parameter
 p0 = [0.0006958040766977115, 6.292789011773518, 0.09067786199274608,  # log normal
@@ -56,13 +57,17 @@ p0 = [0.0006958040766977115, 6.292789011773518, 0.09067786199274608,  # log norm
       1.9893328877436285e-07, 703.2723248019659, 59.25730588891589,   # gaussian
       1.2306205278883204e-07, 1061.4207387188872, 405.3453929882518,  # gaussian
       1.08879695e-14, 1.92593466e-14, 4.73198961e-10, -4.69999453e-10, 3.80312597e-06, 5.43736144e-07,  # fifth_y
-      29891.69217]
+      29891.69217,  # z-factor
+      -0.000002]  # offset
 
 try:
     popt, pcov = curve_fit(combined_model, plots, by, p0=p0, maxfev=100000, xtol=1, ftol=1)
 except RuntimeError:
-    print("Optimal parameters not found. Returning the best found parameters.")
+    print('!!!!!  ERROR  !!!!!')
+    print('Optimal parameters not found.')
+    exit()
 
+print(p0)
 perr = np.sqrt(np.diag(pcov))
 
 A_log, mu_log, sigma_log, \
@@ -71,7 +76,8 @@ A2, mu2, sigma2, \
 A3, mu3, sigma3, \
 A4, mu4, sigma4, \
 a_y, b_y, c_y, d_y, e_y, f_y, \
-a_z = popt
+a_z, \
+offset = popt
 
 fig2D_2 = plt.figure()
 y_by = fig2D_2.add_subplot()

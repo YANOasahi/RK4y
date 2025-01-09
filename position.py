@@ -13,15 +13,22 @@ def Position(x, y, magnet_x, magnet_y, bending_angle):
                   y_diff*np.cos(-np.deg2rad(bending_angle)))
 
     coordinate = np.column_stack((x_particle, x_particle/1000, y_particle))  # representing x2, xpos, dy
+    
+    # print(f'{x_diff*np.cos(-np.deg2rad(bending_angle))}')
+    # print(f'{y_diff*np.sin(-np.deg2rad(bending_angle))}')
+    # print(f'x_particle is {x_particle/1000}')
+    # print(f'mag_rad is {np.deg2rad(bending_angle)}')
+    # print(f'explicit calc is {bending_angle/180*np.pi}')
+    
     return coordinate
 
 
 # # test the function
 # x = 9287.959673
-# y = 0.0
+# y = 1700.0
 # magnet_x = 9232.420563
 # magnet_y = 2536.110167
-# bending_angle = np.pi / 18  # 45 degrees in radians
+# bending_angle = 7.5
 # test = Position(x, y, magnet_x, magnet_y, bending_angle)
 # # Print the result
 # print(test)

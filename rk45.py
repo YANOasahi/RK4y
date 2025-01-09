@@ -76,8 +76,8 @@ def magnetic_field(r):
     b_x = 0.0
     b_y = 0.0
     b_z = Bz.BforXplane(x, y)
-    # if y>1.6 and y<2.2:
-    if y>1.4 and y<1.6:
+    if y>1.6 and y<2.2:
+    # if y>1.4 and y<1.6:
         print(y,b_z)
     return np.array([b_x, b_y, b_z])
 
