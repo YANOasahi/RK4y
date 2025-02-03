@@ -30,7 +30,7 @@ betax = 7.817
 stop_time = 378.937  # in ns
 # stop_time = 15.0  # in ns
 # step time of Runge-Kutta
-step_time = 0.01  # max. 10 ps step
+step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
 # *********************************************
 
@@ -145,13 +145,10 @@ plt.ylabel('position [mm]')
 plt.xlabel('time [ns]')
 plt.legend()
 # x vs y
-box2 = plt.figure(figsize=(7.1, 5.6))
+box2 = plt.figure(figsize=(10.5, 8.4))
 fig2_1 = box2.add_subplot(1, 1, 1)
 fig2_1 = plt.plot(x*1e3, y*1e3, label="X-Y plane")
-# abesan=np.genfromtxt('./kidou_long.dat')
-# abesan=np.genfromtxt('./kidou_long2.dat')
-# abesan=np.genfromtxt('./kidou_long_10ps.dat')
-abesan=np.genfromtxt('./kidou_long_degi7.dat')
+abesan=np.genfromtxt('./kidou_long_10ps.dat')
 fig2_2 = plt.plot(abesan[:,1], abesan[:,2], label="Abe-san results")
 plt.xlabel("x (mm)")
 plt.ylabel("y (mm)")
