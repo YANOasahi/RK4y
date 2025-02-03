@@ -3,7 +3,6 @@ from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 import time
 from fractions import Fraction
-from decimal import Decimal, ROUND_HALF_UP
 from scipy.constants import c
 from scipy.constants import physical_constants
 
