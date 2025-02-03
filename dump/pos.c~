@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <math.h>
+#include <time.h>
+
+double ring_X, ring_Y;
+double Bzz;
+// double pi=M_PI;
+double pi=3.14159265;
+double amu = 931494061 ; // [eV/c^2]
+double vc = 299792458 ; // [m/s]
+double z = 32. ; // z number
+double mass = 77.9229 ; // mass
+double brho0 = 4.7447 ; // [Tm] :4.7447 = 168MeV/u, 4.848(MS03)
+double brho; //
+double main0 = 1915 ; // 1915A base (you can change this value)
+double B0 = 1.182166; //[T] -1.182166 for Br=4.7447(168MeV/u), 1.2079037(MS03)
+
+//double B0 = -1.182166; closed value for Brho = 4.7447 Tm 78Ge 100fs step
+double gam ;
+double beta ;
+
+double MAT[11][11];
+
+double caltmag(double xpos, double ypos, double mag_x, double mag_y, double mag_rad, double mcur, double *tcur ){
+  
+  double tw11, tw21, tw31, tw41, tw51, tw61, tw71, tw81, tw91 ;
+  double en1, en2, en3, en4, en5, en6 ;
+  double ape, len, dy;
+  double Bz ;
+  double rad ;
+
+  double x1, x2, y1, y2;
+  double xpos1,xpos2,xpos3,xpos4,xpos5,xpos6,xpos7,xpos8;
+  double ypos1,ypos2,ypos3,ypos4,ypos5,ypos6;
+  double dy1, dy2, dy3, dy4, dy5;
+
+  double Btrim[10];
+  int itri;
+
+  // Parameters for TARNII magnet //
+  tw11=1.000 * (mcur/main0) ; //    parameter of w11
+  tw21=0.000 ; //    parameter of w21
+  tw31=0.0639773 ; // parameter of w31
+  tw41=0.000 ; // parameter of w41
+  tw51=-54.1635 ; // parameter of w51
+  tw61=0.000 ; // parameter of w61
+  tw71=12402.1 ; // parameter of w71
+  tw81=0.000 ; // parameter of w81
+  tw91=-651257 ; // parameter of w91
+
+  // printf("tw11 is %13.10lf \n", tw11);
+
+  // Enge function parameters for TARNII magnet
+  en1 = 0.288396 ; //    parameter of a1
+  en2 = 1.41928 ; //    parameter of a2
+  en3 = -0.319549 ; // parameter of a3
+  en4 = 0.226168 ; // parameter of a4
+  en5 = -0.026047 ; // parameter of a5
+  en6 = 0.002317 ; // parameter of a6
+
+  ape = 80. ; //[mm] matnet's aperture
+  len = 525. ; //[mm] half length of magnetic field in TARNII
+  /////////////////////////////////////////
+
+  // Trim function parameters at 200 A with 4-gaussian //
+  double a1[10] = {-0.00559819, -0.004793, -0.002201, -0.005188, -0.023787, 0.0019743, 0.0097702, 0.0037986, 0.0051218, 0.0067407};
+  double b1[10] = {-126.476, -137.427, -157.189, -111.732, -132.117, 188.603, 161.154, 168.821, 155.302, 111.382};
+  double c1[10] = {30.9606, 29.6729, 25.2112, 36.8752, 33.6369, 24.8122, 62.3175, 27.9871, 30.3747, 34.6009};
+  double off1[10] = {10.0687, 10.1344, 10.2894, 9.96632, 10.0629, 9.23832, 9.8653, 9.80403, 9.93002, -16.0584};
+  double a2[10] = {-0.0000670702, -0.0000886371, -0.001263, -0.001419, -0.00235, 0.0019491, -0.000999232,0.0000549654, 0.000169799, -0.000154026 };
+  double b2[10] = {-11.2285, -3.66384, -21.5678, -13.3005, -6.34961, 29.0324, 19.2292, 17.3227, 34.4530, 614.0470};
+  double c2[10] = {-13.9661, -13.79960, -18.9073, -19.4676, -22.2167, -21.0937, 20.25420, -11.50580, -17.4388, -521.1790};
+  double off2[10] = {9.48442, 4.08676, 16.9878, 11.0316, 5.98738, -4.80779, 3.408610, 5.13617, -6.46249, -420.573};
+  double a3[10] = {-0.000657458, -0.00475243, -0.0046398, -0.00244726, 0.0180907, 0.0256026, 0.00363535, 0.00239795, 0.000811862, 0.000703519};
+  double b3[10] = {-95.6711, -82.0093, -117.715, -158.686, -129.043, 111.263, 66.6887, 74.4467, 81.6906, 86.7074};
+  double c3[10] = {-14.8655, -29.2736, -32.4186, -26.2377, -30.9078, -39.5128, -34.7429, -22.0430, -16.4470, -15.3450};
+  double off3[10] = {10.3050, 10.3313, 10.7113, 11.1389, 12.9681, 7.609, 10.6119, 10.4978, 10.5619, -0.472402};
+  double a4[10] = {-0.00426336, -0.00252437, -0.00483284, -0.00463077, -0.00533062, -0.0193996, -0.00586014, 0.0051618, 0.00418408, -0.000792968};
+  double b4[10] = {-66.6196, -44.9389, -58.3225, -45.0715, -46.9839, 112.976, 244.062, 114.386, 103.053, 90.6008};
+  double c4[10] = {23.9585, 21.5422, 32.4758, 32.927, 36.0638, 34.7987, 103.475, 32.8979, 25.963, 15.0778};
+  double off4[10] = {10.1855, 9.67604, 9.93579, 9.66259, 9.5711, 9.26375, 6.11265, 9.07634, 9.37191, -37.2705};
+  ///////////////////////////////////////////////////////
+
+  // x,y rotation
+  x1 = (xpos-mag_x); // trans for x -> x'
+  y1 = (ypos-mag_y); // trans for y -> y'
+  
+  x2 = x1*cos(mag_rad) - y1*sin(mag_rad) ; // rot x' -> x''
+  y2 = x1*sin(mag_rad) + y1*cos(mag_rad) ; // rot y' -> y''
+
+  // cal position //
+  
+  xpos1 = x2/1000.;
+  xpos2 = xpos1*xpos1;
+  xpos3 = xpos2*xpos1;
+  xpos4 = xpos3*xpos1;
+  xpos5 = xpos4*xpos1;
+  xpos6 = xpos5*xpos1;
+  xpos7 = xpos6*xpos1;
+  xpos8 = xpos7*xpos1;
+  
+  ypos1 = y2;
+  ypos2 = ypos1*ypos1;
+  ypos3 = ypos2*ypos1;
+  ypos4 = ypos3*ypos1;
+  ypos5 = ypos4*ypos1;
+  ypos6 = ypos5*ypos1;
+  
+  dy = (fabs(ypos1)-len)/ape ;
+  dy1 = dy ;
+  dy2 = dy1*dy1 ;
+  dy3 = dy2*dy1 ;
+  dy4 = dy3*dy1 ;
+  dy5 = dy4*dy1 ;
+
+  return xpos1,dy;
+}
