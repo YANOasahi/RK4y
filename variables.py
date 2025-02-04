@@ -2,8 +2,8 @@ import numpy as np
 
 # *******   magnets   *******
 # current of the main magnets
-main_current = 1918.1205
-# main_current = 1918.4094  # this value is the best fit with abe-san's code
+# main_current = 1918.1205
+main_current = 1918.4094  # this value is the best fit with abe-san's code
 # main_current = 1918.383  # return to almost the same position
 
 # current of the trim coils

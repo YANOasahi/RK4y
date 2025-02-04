@@ -7,9 +7,6 @@ from scipy.constants import c
 from scipy.constants import physical_constants
 
 import mag_field2 as mag
-# import variables as vs
-# import position as pos
-# import map
 
 # start of an execution timer
 start = time.perf_counter()
@@ -29,18 +26,16 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 390  # in ns
-# stop_time = 378.937  # in ns
-# stop_time = 9.7  # in ns
+stop_time = 378.0  # in ns
 # step time of Runge-Kutta
-step_time = 0.1  # max. 100 ps step
+step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
 # *********************************************
 
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-z0 = 15.0
+z0 = -10.0
 r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])  # initial position
 print(f'initial position is ({x0}, {y0}, {z0})')
 
@@ -69,7 +64,7 @@ gamma = Fraction(1/np.sqrt(float(1-np.square(beta))))
 # initial velocity
 v0 = np.array([beta * np.sin(a_init / 1000.0),
                beta * np.cos(a_init / 1000.0),
-               0.0])
+               0.00001])
 print(f'initial velocity is ({v0[0]}, {v0[1]}, {v0[2]})')
 
 print('******* Initial conditions *******')
