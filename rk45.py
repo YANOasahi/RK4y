@@ -26,8 +26,9 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 377.7  # in ns
-# stop_time = 15.0  # in ns
+# stop_time = 376.7  # in ns
+stop_time = 376.7 * 6  # in ns
+# stop_time = 150.0  # in ns
 # step time of Runge-Kutta
 step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
@@ -36,7 +37,7 @@ step_time = 0.05  # max. 50 ps step
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-z0 = 0.0 - 8.0
+z0 = 0.0 + 1.0
 r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])  # initial position
 print(f'initial position is ({x0}, {y0}, {z0})')
 
@@ -63,14 +64,14 @@ beta = Fraction(((c*z*brho)/(amu*mass))/np.sqrt(((c*z*brho) /
 gamma = Fraction(1/np.sqrt(float(1-np.square(beta))))
 
 # initial velocity
-# # vertical angle 0 mrad
-# v0 = np.array([beta * np.sin(a_init / 1000.0),
-#                beta * np.cos(a_init / 1000.0),
-#                0])
-# vertical angle +1.88 mrad
-v0 = np.array([0.99999995 * beta * np.sin(a_init / 1000.0),
-               0.99999995 * beta * np.cos(a_init / 1000.0),
-               np.sqrt(0.00000005)])
+# vertical angle 0 mrad
+v0 = np.array([beta * np.sin(a_init / 1000.0),
+               beta * np.cos(a_init / 1000.0),
+               0])
+# # vertical angle +0.42 mrad
+# v0 = np.array([0.99999995 * beta * np.sin(a_init / 1000.0),
+#                0.99999995 * beta * np.cos(a_init / 1000.0),
+#                np.sqrt(0.00000005)])
 print(f'initial velocity is ({v0[0]}, {v0[1]}, {v0[2]})')
 print(f'vertical angle is {1000 * v0[2]/v0[1]:.5f} mrad')
 
@@ -106,15 +107,6 @@ t = solution.t  # timing information
 x, y, z = solution.y[0], solution.y[1], solution.y[2]  # positions
 vx, vy, vz = solution.y[3], solution.y[4], solution.y[5]  # velocities
 
-# correct revolution time
-# if y[-1]<0:
-#     print(f'!!!!!   Break   !!!!!')
-#     print(f'stop_time ({stop_time}) is too short')
-#     exit()
-# else:
-#     print('******* Revolution time *******')
-#     print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # time unit is ns
-
 print('******* Revolution time *******')
 print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # time unit is ns
 
@@ -123,11 +115,11 @@ print(f'{len(t)} times')
 
 print('*******   Final positions   *******')
 print(f'x is {x[-1]*1e3} mm')  # convert unit in mm
-print(f'difference to initial position is {x[-1]*1e3 - x0} mm')
+print(f'difference to initial position is {(x[-1]*1e3 - x0):.5f} mm')
 print(f'y is {y[-1]*1e3} mm')  # convert unit in mm
-print(f'difference to initial position is {y[-1]*1e3 - y0} mm')
+print(f'difference to initial position is {(y[-1]*1e3 - y0):.5f} mm')
 print(f'z is {z[-1]*1e3} mm')  # convert unit in mm
-print(f'difference to initial position is {z[-1]*1e3 - z0} mm')
+print(f'difference to initial position is {(z[-1]*1e3 - z0):.5f} mm')
 
 print('*******   Final velocities   *******')
 print(f'vx is {vx[-1]*1000/(1e9/c):.3f} mm/ns')  # convert unit in mm/ns

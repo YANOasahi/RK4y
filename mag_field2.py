@@ -29,23 +29,29 @@ def mag_field(r):
     )
     
     # if the nearest magnet is too far
-    if particle_pos[0][0]-vs.magnet_pos_x[near_mag[0]][near_mag[1]]> 1000 and\
-       particle_pos[0][1]-vs.magnet_pos_y[near_mag[0]][near_mag[1]] > 200 and\
-       particle_pos[0][2]-vs.magnet_pos_z[near_mag[0]][near_mag[1]] > 18 :
+    # note that the order is changed due to the difference between
+    # the coordinate of the beam and that of OPERA simulation
+    if abs(particle_pos[0][1]) > 1000 or\
+       abs(particle_pos[0][0]) > 200 or\
+       abs(particle_pos[0][2]*1000) > 18 :
         return np.array([0, 0, 0])
 
     # converted particle position to the nearest magnet's coordinate
     # z>= 0.0 case
-    if particle_pos[0][2]>=0:
+    # note that the order is changed due to the difference between
+    # the coordinate of the beam and that of OPERA simulation
+    elif particle_pos[0][2]>=0:
         query_point = np.array(
             [particle_pos[0][1], 
              particle_pos[0][0], 
              particle_pos[0][2]*1000]
             )
         
-        _, nearest = trim_tree.query(query_point)
     
         if near_mag[1] in {0, 3}:  # trim magnet
+            _, nearest = trim_tree.query(query_point)
+            # note that the order is changed due to the difference between
+            # the coordinate of the beam and that of OPERA simulation
             return np.array(
                 [vs.current_ratio*trim_map[nearest][4], 
                  vs.current_ratio*trim_map[nearest][3], 
@@ -53,6 +59,9 @@ def mag_field(r):
                 )
     
         elif near_mag[1] in {1, 2}: # no trim magnet
+            _, nearest = notrim_tree.query(query_point)
+            # note that the order is changed due to the difference between
+            # the coordinate of the beam and that of OPERA simulation
             return np.array(
                 [vs.current_ratio*notrim_map[nearest][4], 
                  vs.current_ratio*notrim_map[nearest][3], 
@@ -66,9 +75,11 @@ def mag_field(r):
              -particle_pos[0][2]*1000]
             )
         
-        _, nearest = trim_tree.query(query_point)
     
         if near_mag[1] in {0, 3}:  # trim magnet
+            _, nearest = trim_tree.query(query_point)
+            # note that the order is changed due to the difference between
+            # the coordinate of the beam and that of OPERA simulation
             return np.array(
                 [vs.current_ratio*trim_map[nearest][4], 
                  -vs.current_ratio*trim_map[nearest][3], # By should be oppsite 
@@ -76,6 +87,9 @@ def mag_field(r):
                 )
     
         elif near_mag[1] in {1, 2}: # no trim magnet
+            _, nearest = notrim_tree.query(query_point)
+            # note that the order is changed due to the difference between
+            # the coordinate of the beam and that of OPERA simulation
             return np.array(
                 [vs.current_ratio*notrim_map[nearest][4], 
                  -vs.current_ratio*notrim_map[nearest][3], # By should be oppsite
@@ -84,8 +98,8 @@ def mag_field(r):
             
 # # test
 # x0 = 9287.959673
-# y0 = 1517.7
-# z0 = 4.0
+# y0 = 1600.0
+# z0 = -4.0
 # r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])
 # ans = mag_field(r0)
 # print(f'returned magnetic field is {ans}')
