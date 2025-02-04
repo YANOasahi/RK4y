@@ -74,7 +74,6 @@ def mag_field(r):
              particle_pos[0][0], 
              -particle_pos[0][2]*1000]
             )
-        
     
         if near_mag[1] in {0, 3}:  # trim magnet
             _, nearest = trim_tree.query(query_point)
@@ -96,10 +95,10 @@ def mag_field(r):
                  vs.current_ratio*notrim_map[nearest][5]]
                 )
             
-# # test
-# x0 = 9287.959673
-# y0 = 1600.0
-# z0 = -4.0
-# r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])
-# ans = mag_field(r0)
-# print(f'returned magnetic field is {ans}')
+# test
+x0 = 9287.959673
+y0 = 1600.0
+z0 = -0.2
+r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])
+ans = mag_field(r0)
+print(f'returned magnetic field is {ans}')

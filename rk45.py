@@ -37,7 +37,7 @@ step_time = 0.05  # max. 50 ps step
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-z0 = 0.0 + 1.0
+z0 = 0.0 - 0.3
 r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])  # initial position
 print(f'initial position is ({x0}, {y0}, {z0})')
 
