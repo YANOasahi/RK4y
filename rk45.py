@@ -6,7 +6,7 @@ from fractions import Fraction
 from scipy.constants import c
 from scipy.constants import physical_constants
 
-import Bz
+import mag_field as mag
 
 # start of an execution timer
 start = time.perf_counter()
@@ -26,8 +26,9 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 378.937  # in ns
-# stop_time = 15.0  # in ns
+# stop_time = 390  # in ns
+# stop_time = 378.937  # in ns
+stop_time = 11.0  # in ns
 # step time of Runge-Kutta
 step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
@@ -36,7 +37,9 @@ step_time = 0.05  # max. 50 ps step
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-r0 = np.array([x0/1000.0, y0/1000.0, 0.0])  # initial position
+z0 = 0.0
+r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])  # initial position
+print(f'initial position is {x0}, {y0}, {z0}')
 
 # *******   velocities of particles   *******
 # for searching an ideal condition
@@ -70,26 +73,15 @@ print(f'gamma is {float(gamma):.5f}')
 print(f'beta is {float(beta):.5f}')
 print(f'beam energy is {float(energy*1e6):.3f} MeV/u')
 
-# *******   define magnetic field   *******
-def magnetic_field(r):
-    x, y, z = r
-    b_x = 0.0
-    b_y = 0.0
-    b_z = Bz.BforXplane(x, y)
-    # if y>1.59 and y<2.2:
-    # if y>1.4 and y<1.6:
-        # print(y,b_z)
-    return np.array([b_x, b_y, b_z])
-
 
 # initial conditions of calculation
-y0 = np.concatenate([r0, v0])
+init = np.concatenate([r0, v0])
 
 # *******   motion equation   *******
 def lorentz_force(t, y):
     r = y[:3]  # position
     v = y[3:]  # velocity
-    B = magnetic_field(r)
+    B = mag.mag_field(r)
     # differential of position
     drdt = v
     # differential of velocity
@@ -101,7 +93,7 @@ def lorentz_force(t, y):
 t_span = (0, stop_time/(1e9/c))  # conver time unit in ns
 
 # *******   solve motion equation using RK45   *******
-solution = solve_ivp(lorentz_force, t_span, y0,
+solution = solve_ivp(lorentz_force, t_span, init,
                      method='RK45', max_step=step_time/(1e9/c))
 
 # results
@@ -110,13 +102,16 @@ x, y, z = solution.y[0], solution.y[1], solution.y[2]  # positions
 vx, vy, vz = solution.y[3], solution.y[4], solution.y[5]  # velocities
 
 # correct revolution time
-if y[-1]<0:
-    print(f'!!!!!   Break   !!!!!')
-    print(f'stop_time ({stop_time}) is too short')
-    exit()
-else:
-    print('******* Revolution time *******')
-    print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # convert time unit in ns
+# if y[-1]<0:
+#     print(f'!!!!!   Break   !!!!!')
+#     print(f'stop_time ({stop_time}) is too short')
+#     exit()
+# else:
+#     print('******* Revolution time *******')
+#     print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # time unit is ns
+
+print('******* Revolution time *******')
+print(f'{(t[-1]*1e9/c)-(y[-1]/(vy[-1]/(1e9/c))):.3f} ns')  # time unit is ns
 
 print('*******   The number of iterations   *******')
 print(f'{len(t)} times')
@@ -124,10 +119,12 @@ print(f'{len(t)} times')
 print('*******   Final positions   *******')
 print(f'x is {x[-1]*1e3} mm')  # convert unit in mm
 print(f'y is {y[-1]*1e3} mm')  # convert unit in mm
+print(f'z is {z[-1]*1e3} mm')  # convert unit in mm
 
 print('*******   Final velocities   *******')
 print(f'vx is {vx[-1]*1000/(1e9/c):.3f} mm/ns')  # convert unit in mm/ns
 print(f'vy is {vy[-1]*1000/(1e9/c):.3f} mm/ns')  # convert unit in mm/ns
+print(f'vz is {vz[-1]*1000/(1e9/c):.3f} mm/ns')  # convert unit in mm/ns
 
 # *******   output file   *******
 with open("rk45_output.dat", "w") as file:
@@ -141,6 +138,13 @@ fig1_1 = box1.add_subplot(1, 1, 1)
 fig1_1 = plt.plot(t/(1e8/c), x*1e3, label='x-motion')
 fig1_1 = plt.plot(t/(1e8/c), y*1e3, label='y-motion')
 plt.ylabel('position [mm]')
+plt.xlabel('time [ns]')
+plt.legend()
+# t vs z
+box12 = plt.figure(figsize=(15, 5))
+fig1_2 = box12.add_subplot(1, 1, 1)
+fig1_2 = plt.plot(t/(1e8/c), z*1e3, label='z-motion')
+plt.ylabel('position in Z [mm]')
 plt.xlabel('time [ns]')
 plt.legend()
 # x vs y
