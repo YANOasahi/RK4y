@@ -39,47 +39,58 @@ def mag_field(r):
     )
 
     # converted particle position to the nearest magnet's coordinate
-    query_point = np.array(
-        [particle_pos[0][1], 
-         particle_pos[0][0], 
-         particle_pos[0][2]]
-        )
-    
-    if near_mag[1] in {0, 3}:  # trim magnet
+    # z>= 0.0 case
+    if particle_pos[0][2]>=0:
+        query_point = np.array(
+            [particle_pos[0][1], 
+             particle_pos[0][0], 
+             particle_pos[0][2]*1000]
+            )
+        
         _, nearest = trim_tree.query(query_point)
-        if particle_pos[0][2] >= 0:
-            return np.array(
-                [trim_map[nearest][4], 
-                 trim_map[nearest][3], 
-                 trim_map[nearest][5]]
-                )
-        elif particle_pos[0][2] < 0:
-            return np.array(
-                [trim_map[nearest][4], 
-                 -trim_map[nearest][3], 
-                 trim_map[nearest][5]]
-                )
-            
     
-    else:  # no trim magnet
-        _, nearest = notrim_tree.query(query_point)
-        if particle_pos[0][2] >= 0:
+        if near_mag[1] in {0, 3}:  # trim magnet
             return np.array(
-                [notrim_map[nearest][4], 
-                 notrim_map[nearest][3], 
-                 notrim_map[nearest][5]]
+                [vs.current_ratio*trim_map[nearest][4], 
+                 vs.current_ratio*trim_map[nearest][3], 
+                 vs.current_ratio*trim_map[nearest][5]]
                 )
-        if particle_pos[0][2] < 0:
+    
+        elif near_mag[1] in {1, 2}: # no trim magnet
             return np.array(
-                [notrim_map[nearest][4], 
-                 -notrim_map[nearest][3], 
-                 notrim_map[nearest][5]]
+                [vs.current_ratio*notrim_map[nearest][4], 
+                 vs.current_ratio*notrim_map[nearest][3], 
+                 vs.current_ratio*notrim_map[nearest][5]]
                 )
+    # z<0.0 case
+    elif particle_pos[0][2] < 0:
+        query_point = np.array(
+            [particle_pos[0][1], 
+             particle_pos[0][0], 
+             -particle_pos[0][2]*1000]
+            )
+        
+        _, nearest = trim_tree.query(query_point)
+    
+        if near_mag[1] in {0, 3}:  # trim magnet
+            return np.array(
+                [vs.current_ratio*trim_map[nearest][4], 
+                 -vs.current_ratio*trim_map[nearest][3], # By should be oppsite 
+                 vs.current_ratio*trim_map[nearest][5]]
+                )
+    
+        elif near_mag[1] in {1, 2}: # no trim magnet
+            return np.array(
+                [vs.current_ratio*notrim_map[nearest][4], 
+                 -vs.current_ratio*notrim_map[nearest][3], # By should be oppsite
+                 vs.current_ratio*notrim_map[nearest][5]]
+                )
+
             
-# test
-x0 = 9287.959673
-y0 = 0.0
-z0 = 4.0
-r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])
-ans = mag_field(r0)
-print(f'returned magnetic field is {ans}')
+# # test
+# x0 = 9287.959673
+# y0 = 1517.7
+# z0 = -4.0
+# r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])
+# ans = mag_field(r0)
+# print(f'returned magnetic field is {ans}')

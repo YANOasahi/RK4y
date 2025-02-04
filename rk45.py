@@ -26,7 +26,8 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 378.0  # in ns
+stop_time = 377.7  # in ns
+# stop_time = 15.0  # in ns
 # step time of Runge-Kutta
 step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
@@ -35,7 +36,7 @@ step_time = 0.05  # max. 50 ps step
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-z0 = -10.0
+z0 = 0.0 - 8.0
 r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])  # initial position
 print(f'initial position is ({x0}, {y0}, {z0})')
 
@@ -62,70 +63,21 @@ beta = Fraction(((c*z*brho)/(amu*mass))/np.sqrt(((c*z*brho) /
 gamma = Fraction(1/np.sqrt(float(1-np.square(beta))))
 
 # initial velocity
-v0 = np.array([beta * np.sin(a_init / 1000.0),
-               beta * np.cos(a_init / 1000.0),
-               0.00001])
+# # vertical angle 0 mrad
+# v0 = np.array([beta * np.sin(a_init / 1000.0),
+#                beta * np.cos(a_init / 1000.0),
+#                0])
+# vertical angle +1.88 mrad
+v0 = np.array([0.99999995 * beta * np.sin(a_init / 1000.0),
+               0.99999995 * beta * np.cos(a_init / 1000.0),
+               np.sqrt(0.00000005)])
 print(f'initial velocity is ({v0[0]}, {v0[1]}, {v0[2]})')
+print(f'vertical angle is {1000 * v0[2]/v0[1]:.5f} mrad')
 
 print('******* Initial conditions *******')
 print(f'gamma is {float(gamma):.5f}')
 print(f'beta is {float(beta):.5f}')
 print(f'beam energy is {float(energy*1e6):.3f} MeV/u')
-
-# notrim_map, trim_map = map.map_making()
-
-# def mag_field(r):
-#     # find the nearest magnet
-#     x, y, z = r
-#     distance_mag=[[((vs.magnet_pos_x[i][j]-(x*1000))**2 + 
-#                     (vs.magnet_pos_y[i][j]-(y*1000))**2 +
-#                     (vs.magnet_pos_z[i][j]-z*1000)**2) for j in range(4)] for i in range(6)]
-#     near_mag = np.unravel_index(np.argmin(distance_mag), (6, 4))
-#     min_distance_mag=distance_mag[near_mag[0]][near_mag[1]]
-
-#     # if the nearest magnet is too far,
-#     # magnetic field will be np.array([0, 0, 0])
-#     if min_distance_mag > 1000**2 + 200**2 + 18**2:
-#         print('too far!')
-#         return np.array([0, 0, 0])
-    
-#     elif near_mag[1]==0 or near_mag[1]==3:
-#         # convert particle position to the nearest magnet's coordinate
-#         particle_pos = pos.Position(x*1000, y*1000, z,
-#                                vs.magnet_pos_x[near_mag[0]][near_mag[1]],
-#                                vs.magnet_pos_y[near_mag[0]][near_mag[1]],
-#                                vs.bend_angle[near_mag[0]][near_mag[1]])
-#         # find the nearest map data
-#         pos_in_map = [((trim_map[i][0]-particle_pos[0][1])**2 + 
-#                        (trim_map[i][1]-particle_pos[0][0])**2 +
-#                        (trim_map[i][2]-particle_pos[0][2])**2) 
-#                        for i in range(16800000)]
-#         nearest = np.argmin(pos_in_map)
-#         print('trim magnet')
-#         return np.array(
-#             [notrim_map[nearest][4], 
-#              notrim_map[nearest][3], 
-#              notrim_map[nearest][5]]
-#             )
-    
-#     elif near_mag[1]==1 or near_mag[1]==2:
-#         # convert particle position to the nearest magnet's coordinate
-#         particle_pos = pos.Position(x*1000, y*1000, z,
-#                                vs.magnet_pos_x[near_mag[0]][near_mag[1]],
-#                                vs.magnet_pos_y[near_mag[0]][near_mag[1]],
-#                                vs.bend_angle[near_mag[0]][near_mag[1]])
-#         # find the nearest map data
-#         pos_in_map = [((notrim_map[i][0]-particle_pos[0][1])**2 + 
-#                        (notrim_map[i][1]-particle_pos[0][0])**2 +
-#                        (notrim_map[i][2]-particle_pos[0][2])**2) 
-#                        for i in range(16800000)]
-#         nearest = np.argmin(pos_in_map)
-#         print('no trim magnet')
-#         return np.array(
-#             [trim_map[nearest][4], 
-#              trim_map[nearest][3], 
-#              trim_map[nearest][5]]
-#             )
 
 # initial conditions of calculation
 init = np.concatenate([r0, v0])
@@ -171,8 +123,11 @@ print(f'{len(t)} times')
 
 print('*******   Final positions   *******')
 print(f'x is {x[-1]*1e3} mm')  # convert unit in mm
+print(f'difference to initial position is {x[-1]*1e3 - x0} mm')
 print(f'y is {y[-1]*1e3} mm')  # convert unit in mm
+print(f'difference to initial position is {y[-1]*1e3 - y0} mm')
 print(f'z is {z[-1]*1e3} mm')  # convert unit in mm
+print(f'difference to initial position is {z[-1]*1e3 - z0} mm')
 
 print('*******   Final velocities   *******')
 print(f'vx is {vx[-1]*1000/(1e9/c):.3f} mm/ns')  # convert unit in mm/ns
@@ -200,6 +155,12 @@ fig1_2 = plt.plot(t/(1e8/c), z*1e3, label='z-motion')
 plt.ylabel('position in Z [mm]')
 plt.xlabel('time [ns]')
 plt.legend()
+# 3-D scatter plot
+fig1_3, ax = plt.subplots(figsize=(9, 9), subplot_kw={'projection': '3d'})
+ax.scatter(x*1e3, y*1e3, z*1e3)
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.set_zlabel("z")
 # x vs y
 box2 = plt.figure(figsize=(10.5, 8.4))
 fig2_1 = box2.add_subplot(1, 1, 1)
