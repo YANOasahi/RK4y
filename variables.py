@@ -8,7 +8,7 @@ import numpy as np
 main_current = 1910.1 # most closed orbit of x-motion
 
 # calculation is normalized by this current
-main_base = 1915.0
+main_base = 1912.0
 
 # set magnetic flux density
 # B0z = 1.182166

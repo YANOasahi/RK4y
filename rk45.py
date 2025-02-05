@@ -37,7 +37,7 @@ step_time = 0.05  # max. 50 ps step
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-z0 = 0.0 + 0.2
+z0 = 0.0
 r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])  # initial position
 print(f'initial position is ({x0}, {y0}, {z0})')
 
@@ -68,14 +68,10 @@ gamma = Fraction(1/np.sqrt(float(1-np.square(beta))))
 v0 = np.array([beta * np.sin(a_init / 1000.0),
                beta * np.cos(a_init / 1000.0),
                0])
-# # vertical angle +0.42 mrad
-# v0 = np.array([0.99999995 * beta * np.sin(a_init / 1000.0),
-#                0.99999995 * beta * np.cos(a_init / 1000.0),
-#                np.sqrt(0.00000005)])
-# # vertical angle +1.18 mrad
-# v0 = np.array([0.9999999 * beta * np.sin(a_init / 1000.0),
-#                0.9999999 * beta * np.cos(a_init / 1000.0),
-#                np.sqrt(0.0000001)])
+# # vertical angle +1.00 mrad
+# v0 = np.array([0.999 * beta * np.sin(a_init / 1000.0),
+#                0.999 * beta * np.cos(a_init / 1000.0),
+#                0.001 * beta])
 print(f'initial velocity is ({v0[0]}, {v0[1]}, {v0[2]})')
 print(f'vertical angle is {1000 * v0[2]/v0[1]:.5f} mrad')
 
