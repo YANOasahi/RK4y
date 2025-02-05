@@ -26,9 +26,9 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-# stop_time = 376.7  # in ns
-stop_time = 376.7 * 6  # in ns
-# stop_time = 150.0  # in ns
+stop_time = 376.6  # in ns
+# stop_time = 376.6 * 6 # in ns
+# stop_time = 32.0  # in ns
 # step time of Runge-Kutta
 step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
@@ -37,7 +37,7 @@ step_time = 0.05  # max. 50 ps step
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-z0 = 0.0 - 0.3
+z0 = 0.0 + 0.2
 r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])  # initial position
 print(f'initial position is ({x0}, {y0}, {z0})')
 
@@ -72,6 +72,10 @@ v0 = np.array([beta * np.sin(a_init / 1000.0),
 # v0 = np.array([0.99999995 * beta * np.sin(a_init / 1000.0),
 #                0.99999995 * beta * np.cos(a_init / 1000.0),
 #                np.sqrt(0.00000005)])
+# # vertical angle +1.18 mrad
+# v0 = np.array([0.9999999 * beta * np.sin(a_init / 1000.0),
+#                0.9999999 * beta * np.cos(a_init / 1000.0),
+#                np.sqrt(0.0000001)])
 print(f'initial velocity is ({v0[0]}, {v0[1]}, {v0[2]})')
 print(f'vertical angle is {1000 * v0[2]/v0[1]:.5f} mrad')
 
@@ -88,10 +92,8 @@ def lorentz_force(t, y):
     r = y[:3]  # position
     v = y[3:]  # velocity
     B = mag.mag_field(r)
-    # differential of position
-    drdt = v
-    # differential of velocity
-    dvdt = Fraction((z*c / (mass*amu*gamma))) * np.cross(v, B)
+    drdt = v # differential of position
+    dvdt = Fraction((z*c / (mass*amu*gamma))) * np.cross(v, B) # differential of velocity
     return np.concatenate([drdt, dvdt])
 
 
