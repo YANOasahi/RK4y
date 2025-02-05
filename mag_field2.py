@@ -102,16 +102,3 @@ def mag_field(r):
 # r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])
 # ans = mag_field(r0)
 # print(f'returned magnetic field is {ans}')
-
-# x1 = 9.27489285*1000
-# y1 = 5*1000
-# z1 = 0.0
-# r1 = np.array([x1/1000.0, y1/1000.0, z1/1000.0])
-# ans1 = mag_field(r1)
-# print(f'returned magnetic field is {ans1}')
-
-# x2 = 8.40064028*1000
-# y2 = 4.92941521*1000
-# z2 = 0.2
-# r2 = np.array([x2/1000.0, y2/1000.0, z2/1000.0])
-# ans2 = mag_field(r2)
