@@ -23,12 +23,12 @@ amu = physical_constants['atomic mass unit-electron volt relationship'][0]
 z, mass = 32.0, 77.922853  # 78Ge, mass is taken from AME2020
 # brho of particles when dp/p=0 [Tm]
 brho0 = 4.7447
+# brho0 = 4.8357 # 1.19549 T x 4.045 m
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 376.6  # in ns
-# stop_time = 376.6 * 6 # in ns
-# stop_time = 32.0  # in ns
+stop_time = 376.59  # in ns
+# stop_time = 376.581 * 2000 # in ns
 # step time of Runge-Kutta
 step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
@@ -68,10 +68,10 @@ gamma = Fraction(1/np.sqrt(float(1-np.square(beta))))
 v0 = np.array([beta * np.sin(a_init / 1000.0),
                beta * np.cos(a_init / 1000.0),
                0])
-# # vertical angle +1.00 mrad
-# v0 = np.array([0.999 * beta * np.sin(a_init / 1000.0),
-#                0.999 * beta * np.cos(a_init / 1000.0),
-#                0.001 * beta])
+# # vertical angle +0.50 mrad
+# v0 = np.array([0.9995 * beta * np.sin(a_init / 1000.0),
+#                0.9995 * beta * np.cos(a_init / 1000.0),
+#                0.0005 * beta])
 print(f'initial velocity is ({v0[0]}, {v0[1]}, {v0[2]})')
 print(f'vertical angle is {1000 * v0[2]/v0[1]:.5f} mrad')
 
@@ -147,7 +147,7 @@ plt.xlabel('time [ns]')
 plt.legend()
 # 3-D scatter plot
 fig1_3, ax = plt.subplots(figsize=(9, 9), subplot_kw={'projection': '3d'})
-ax.scatter(x*1e3, y*1e3, z*1e3)
+ax.scatter(x*1e3, y*1e3, z*1e3, s=2, marker='.')
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 ax.set_zlabel("z")
