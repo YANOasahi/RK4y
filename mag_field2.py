@@ -32,13 +32,13 @@ def mag_field(r):
     # if the nearest magnet is too far
     if abs(particle_pos[0][0]) > 200 or\
        abs(particle_pos[0][1]) > 750 or\
-       abs(particle_pos[0][2]*1000) > 18 :
+       abs(particle_pos[0][2]) > 18 :
         #    print('too far')
            return np.array([0, 0, 0])
 
-    # z>= 0.0 case
     # note that the order is changed due to the difference between
     # the coordinate of the beam and that of OPERA simulation
+    # also unit of position should converted from mm to cm
     else:
         query_point = np.array(
             [particle_pos[0][1]/10, 
@@ -50,20 +50,22 @@ def mag_field(r):
             _, nearest = trim_tree.query(query_point)
             # note that the order is changed due to the difference between
             # the coordinate of the beam and that of OPERA simulation
+            # also unit of B should converted from G to T
             return np.array(
-                [vs.current_ratio*trim_map[nearest][4], # Bx
-                 vs.current_ratio*trim_map[nearest][3], # By
-                 vs.current_ratio*trim_map[nearest][5]] # Bz
+                [vs.current_ratio*trim_map[nearest][4]/10000, # Bx
+                 vs.current_ratio*trim_map[nearest][3]/10000, # By
+                 vs.current_ratio*trim_map[nearest][5]/10000] # Bz
                 )
     
         elif near_mag[1] in {1, 2}: # no trim magnet
             _, nearest = notrim_tree.query(query_point)
             # note that the order is changed due to the difference between
             # the coordinate of the beam and that of OPERA simulation
+            # also unit of B should converted from G to T
             return np.array(
-                [vs.current_ratio*notrim_map[nearest][4], # Bx 
-                 vs.current_ratio*notrim_map[nearest][3], # By 
-                 vs.current_ratio*notrim_map[nearest][5]] # Bz
+                [vs.current_ratio*notrim_map[nearest][4]/10000, # Bx 
+                 vs.current_ratio*notrim_map[nearest][3]/10000, # By 
+                 vs.current_ratio*notrim_map[nearest][5]/10000] # Bz
                 )
 
             
