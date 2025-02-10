@@ -31,7 +31,7 @@ def mag_field(r):
     
     # if the nearest magnet is too far
     if abs(particle_pos[0][0]) > 200 or\
-       abs(particle_pos[0][1]) > 1000 or\
+       abs(particle_pos[0][1]) > 750 or\
        abs(particle_pos[0][2]*1000) > 18 :
         #    print('too far')
            return np.array([0, 0, 0])
@@ -39,11 +39,11 @@ def mag_field(r):
     # z>= 0.0 case
     # note that the order is changed due to the difference between
     # the coordinate of the beam and that of OPERA simulation
-    elif particle_pos[0][2]>=0:
+    else:
         query_point = np.array(
-            [particle_pos[0][1], 
-             particle_pos[0][0], 
-             particle_pos[0][2]*1000]
+            [particle_pos[0][1]/10, 
+             particle_pos[0][0]/10, 
+             particle_pos[0][2]/10]
             )
     
         if near_mag[1] in {0, 3}:  # trim magnet
@@ -65,35 +65,7 @@ def mag_field(r):
                  vs.current_ratio*notrim_map[nearest][3], # By 
                  vs.current_ratio*notrim_map[nearest][5]] # Bz
                 )
-    # z<0.0 case
-    # utilize magnetic field symmetry
-    elif particle_pos[0][2] < 0:
-        query_point = np.array(
-            [particle_pos[0][1], 
-             particle_pos[0][0], 
-             -particle_pos[0][2]*1000]
-            )
-        # print(f'query point is {query_point}')
-    
-        if near_mag[1] in {0, 3}:  # trim magnet
-            _, nearest = trim_tree.query(query_point)
-            # note that the order is changed due to the difference between
-            # the coordinate of the beam and that of OPERA simulation
-            return np.array(
-                [-vs.current_ratio*trim_map[nearest][4], # Bx
-                 -vs.current_ratio*trim_map[nearest][3], # By
-                 vs.current_ratio*trim_map[nearest][5]]  # Bx
-                )
-    
-        elif near_mag[1] in {1, 2}: # no trim magnet
-            _, nearest = notrim_tree.query(query_point)
-            # note that the order is changed due to the difference between
-            # the coordinate of the beam and that of OPERA simulation
-            return np.array(
-                [-vs.current_ratio*notrim_map[nearest][4], # Bx
-                 -vs.current_ratio*notrim_map[nearest][3], # By
-                 vs.current_ratio*notrim_map[nearest][5]]  # Bz
-                )
+
             
 # # test
 # x0 = 9.27489285*1000

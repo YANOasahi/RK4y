@@ -6,8 +6,6 @@ def map_making():
     # read map files
     notrim_files = glob.glob("./notrim_map/*.txt")
     trim_files = glob.glob("./trim_map/*.txt")
-    # notrim_files = glob.glob("./notrim_map/Z0_map_notrim.txt")
-    # trim_files = glob.glob("./trim_map/Z0_map_trim.txt")
     # prepare pandas for the data from the files
     notrim_tmp = [pd.read_table(file, header=None) for file in notrim_files]
     trim_tmp = [pd.read_table(file, header=None) for file in trim_files]
