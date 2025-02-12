@@ -22,13 +22,13 @@ amu = physical_constants['atomic mass unit-electron volt relationship'][0]
 # target nuclide
 z, mass = 32.0, 77.922853  # 78Ge, mass is taken from AME2020
 # brho of particles when dp/p=0 [Tm]
-brho0 = 4.7447
-# brho0 = 4.8357 # 1.19549 T x 4.045 m
+# brho0 = 4.7447
+brho0 = 4.7844  # best Brho for Opera
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-# stop_time = 377.40  # in ns
-stop_time = 377.36 * 2000 # in ns
+# stop_time = 376.65  # in ns
+stop_time = 376.65 * 2000 # in ns
 # step time of Runge-Kutta
 step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
