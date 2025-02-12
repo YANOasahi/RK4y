@@ -27,8 +27,8 @@ brho0 = 4.7447
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-stop_time = 376.59  # in ns
-# stop_time = 376.581 * 2000 # in ns
+# stop_time = 377.40  # in ns
+stop_time = 377.36 * 2000 # in ns
 # step time of Runge-Kutta
 step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
@@ -37,7 +37,7 @@ step_time = 0.05  # max. 50 ps step
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-z0 = 0.0
+z0 = -5.0
 r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])  # initial position
 print(f'initial position is ({x0}, {y0}, {z0})')
 
@@ -130,31 +130,32 @@ with open("rk45_output.dat", "w") as file:
         file.write(f"{column1} {column2}\n")
 
 # *******   plot   *******
+# for fast plotting, data is extracted in every 5
 # t vs x, and t vs y
 box1 = plt.figure(figsize=(15, 5))
 fig1_1 = box1.add_subplot(1, 1, 1)
-fig1_1 = plt.plot(t/(1e8/c), x*1e3, label='x-motion')
-fig1_1 = plt.plot(t/(1e8/c), y*1e3, label='y-motion')
+fig1_1 = plt.plot(t[::5]/(1e8/c), x[::5]*1e3, label='x-motion')
+fig1_1 = plt.plot(t[::5]/(1e8/c), y[::5]*1e3, label='y-motion')
 plt.ylabel('position [mm]')
 plt.xlabel('time [ns]')
 plt.legend()
 # t vs z
 box12 = plt.figure(figsize=(15, 5))
 fig1_2 = box12.add_subplot(1, 1, 1)
-fig1_2 = plt.plot(t/(1e8/c), z*1e3, label='z-motion')
+fig1_2 = plt.plot(t[::5]/(1e8/c), z[::5]*1e3, label='z-motion')
 plt.ylabel('position in Z [mm]')
 plt.xlabel('time [ns]')
 plt.legend()
 # 3-D scatter plot
 fig1_3, ax = plt.subplots(figsize=(9, 9), subplot_kw={'projection': '3d'})
-ax.scatter(x*1e3, y*1e3, z*1e3, s=2, marker='.')
+ax.scatter(x[::5]*1e3, y[::5]*1e3, z[::5]*1e3, s=2, marker='.')
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 ax.set_zlabel("z")
 # x vs y
 box2 = plt.figure(figsize=(10.5, 8.4))
 fig2_1 = box2.add_subplot(1, 1, 1)
-fig2_1 = plt.plot(x*1e3, y*1e3, label="X-Y plane")
+fig2_1 = plt.plot(x[::5]*1e3, y[::5]*1e3, label="X-Y plane")
 abesan=np.genfromtxt('./kidou_long_10ps.dat')
 fig2_2 = plt.plot(abesan[:,1], abesan[:,2], label="Abe-san results")
 plt.xlabel("x (mm)")
