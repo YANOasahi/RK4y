@@ -5,7 +5,7 @@ import numpy as np
 # main_current = 1918.1205
 # main_current = 1918.4094  # this value is the best fit with abe-san's code
 # main_current = 1911.5 # most closed orbit of z-motion
-# main_current = 1896.5 # most closed orbit of x-motion
+# main_current = 1907.1 # most closed orbit of x-motion
 main_current = 1912.0 # match to the OPERA simulation
 
 # calculation is normalized by this current

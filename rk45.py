@@ -27,8 +27,8 @@ brho0 = 4.7844  # best Brho for Opera
 # beta of the ring in the X-axis
 betax = 7.817
 # the end time of Runge-Kutta
-# stop_time = 376.65  # in ns
-stop_time = 376.65 * 2000 # in ns
+stop_time = 376.65  # in ns
+# stop_time = 376.65 * 20# in ns
 # step time of Runge-Kutta
 step_time = 0.05  # max. 50 ps step
 # step_time = 0.0001  # max. 100 fs step
@@ -37,7 +37,7 @@ step_time = 0.05  # max. 50 ps step
 # *******   positions of particles   *******
 x0 = 9287.959673
 y0 = 0.0
-z0 = -5.0
+z0 = 5.0
 r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])  # initial position
 print(f'initial position is ({x0}, {y0}, {z0})')
 

@@ -23,7 +23,7 @@ def mag_field(r):
     
     # calculate particle position
     particle_pos = pos.Position(
-        x * 1000, y * 1000, z,
+        x * 1000, y * 1000, z * 1000,
         vs.magnet_pos_x[near_mag[0]][near_mag[1]],
         vs.magnet_pos_y[near_mag[0]][near_mag[1]],
         vs.bend_angle[near_mag[0]][near_mag[1]]
@@ -69,10 +69,10 @@ def mag_field(r):
                 )
 
             
-# # test
-# x0 = 9.27489285*1000
-# y0 = 5*1000
-# z0 = -0.2
-# r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])
-# ans = mag_field(r0)
-# print(f'returned magnetic field is {ans}')
+# test
+x0 = 9.27489285*1000
+y0 = 1700
+z0 = -0.2
+r0 = np.array([x0/1000.0, y0/1000.0, z0/1000.0])
+ans = mag_field(r0)
+print(f'returned magnetic field is {ans}')
