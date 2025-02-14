@@ -18,8 +18,8 @@ def map_making():
     return notrim,trim
 
 # notrim_map, trim_map=map_making()
-# notrim_subset = notrim_map[::5]
-# trim_subset = trim_map[::5]
+# notrim_subset = notrim_map[::10]
+# trim_subset = trim_map[::10]
 
 # fig1_1, ax = plt.subplots(figsize=(9, 9), subplot_kw={'projection': '3d'})
 # ax.scatter(notrim_subset[:, 0], notrim_subset[:, 1], -notrim_subset[:, 5], 
